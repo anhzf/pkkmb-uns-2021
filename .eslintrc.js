@@ -28,9 +28,21 @@ module.exports = {
     'react',
     '@typescript-eslint',
   ],
+  globals: {
+    React: true,
+    JSX: true,
+  },
   rules: {
+    // import related
+    'import/extensions': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    // react
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.tsx'] }],
     'react/jsx-props-no-spreading': 'off',
+    'react/require-default-props': 'off',
+    'react/jsx-max-props-per-line': [1, { maximum: 1, when: 'always' }],
+    // code style
+    'max-len': ['warn', { code: 150 }],
   },
 };

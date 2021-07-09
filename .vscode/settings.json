@@ -7,5 +7,20 @@
     "typescriptreact",
     "javascript",
     "javascriptreact"
+  ],
+  "tailwindCSS.experimental.classRegex": [
+    "tw`([^`]*)", // tw`...`
+    "tw=\"([^\"]*)", // <div tw="..." />
+    "tw={\"([^\"}]*)", // <div tw={"..."} />
+    "tw\\.\\w+`([^`]*)", // tw.xxx`...`
+    "tw\\(.*?\\)`([^`]*)", // tw(Component)`...`
+    "\\w*[Cc]lass\\w*\\s+=\\s+[\"']([^\"']*)", //...class...="" ...class...='' ...Class... = "" ...Class... = ''
+  ],
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "conventionalCommits.scopes": [
+    "page"
   ]
 }

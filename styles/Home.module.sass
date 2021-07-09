@@ -1,0 +1,54 @@
+@mixin line($vert: false)
+  @apply relative bg-gray-900 transition-colors
+
+  @if $vert
+    @apply w-1.5 h-12
+  @else
+    @apply w-12 h-1.5
+
+%pseudo-line
+  @apply absolute w-full h-full bg-gray-900 transition-transform
+  content: ''
+  will-change: transform
+
+.hamburger
+  @include line()
+
+  &::before, &::after
+    @extend %pseudo-line
+    @apply left-0
+
+  &::before
+    @apply -top-3
+
+  &::after
+    @apply -bottom-3
+
+
+.hamburger_close
+  @include line()
+  @apply bg-transparent
+
+  &::before, &::after
+    @extend %pseudo-line
+    @apply left-0
+
+  &::before
+    @apply rotate-45
+
+  &::after
+    @apply -rotate-45
+
+.arrowDown
+  @include line(true)
+  @apply bg-white w-1
+
+  &::before, &::after
+    @extend %pseudo-line
+    @apply bottom-0 h-1/2 bg-white
+
+  &::before
+    @apply rotate-45 translate-x-[200%]
+
+  &::after
+    @apply -rotate-45 translate-x-[-200%]

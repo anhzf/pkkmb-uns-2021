@@ -1,0 +1,12 @@
+.btn
+  @apply px-4 py-2 font-medium text-sm text-primary-200 rounded-md flex items-center gap-x-2 transition-colors
+
+  &:hover
+    @apply bg-primary-200/10
+
+  &--fill
+    @extend .btn
+    @apply bg-white rounded-full shadow
+
+    &:hover
+      @apply bg-gray-100
