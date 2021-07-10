@@ -44,5 +44,6 @@ module.exports = {
     'react/jsx-max-props-per-line': [1, { maximum: 1, when: 'always' }],
     // code style
     'max-len': ['warn', { code: 150 }],
+    'no-underscore-dangle': 'off',
   },
 };

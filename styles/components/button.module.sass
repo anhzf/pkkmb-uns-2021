@@ -1,0 +1,28 @@
+.base
+  @apply relative px-4 py-2 font-medium text-sm text-primary-200 bg-primary-200 bg-opacity-10 rounded-full outline-none flex items-center gap-x-2 transition-all
+  &:hover
+    @apply bg-opacity-20
+
+.flat
+  @extend .base
+  @apply bg-transparent
+  &:hover
+    @apply bg-primary-100 bg-opacity-10
+
+.push
+  @extend .base
+  @apply bg-white shadow
+  &:hover
+    @apply bg-gray-100
+
+
+.__icon
+  @apply transition-transform
+
+
+// interaction related
+.base, .flat, .push
+  &:hover .__icon
+    @apply translate-x-1
+  &:active, &:focus
+    @apply outline-none ring ring-primary-200 ring-opacity-70

@@ -3,12 +3,12 @@ import Head from 'next/head';
 import Image from 'next/image';
 import YouTube from 'react-youtube';
 import { ArrowDown32, ArrowRight16 } from '@carbon/icons-react';
-import PageSection from '../components/PageSection';
-import BaseFooter from '../components/BaseFooter';
-import CardMerch from '../components/CardMerch';
-import CardNews from '../components/Home/CardNews';
-import styles from '../styles/Home.module.sass';
-import componentStyles from '../styles/components.module.sass';
+import PageSection from 'components/PageSection';
+import BaseFooter from 'components/BaseFooter';
+import CardMerch from 'components/CardMerch';
+import CardNews from 'components/Home/CardNews';
+import styles from 'styles/Home.module.sass';
+import styleBtn from 'styles/components/button.module.sass';
 
 export default function Home() {
   const [toggleMenu, setToggleMenu] = useState(true);
@@ -86,10 +86,10 @@ export default function Home() {
           <div className="p-4">
             <button
               type="button"
-              className={componentStyles.btn}
+              className={styleBtn.base}
             >
               <span>Lihat semua</span>
-              <ArrowRight16 className={componentStyles.btn__icon} />
+              <ArrowRight16 className={styleBtn.__icon} />
             </button>
           </div>
         </PageSection>
@@ -103,10 +103,10 @@ export default function Home() {
           <div className="p-4">
             <button
               type="button"
-              className={componentStyles['btn--push']}
+              className={styleBtn.push}
             >
               <span>Pelajari lebih lanjut</span>
-              <ArrowRight16 className={componentStyles.btn__icon} />
+              <ArrowRight16 className={styleBtn.__icon} />
             </button>
           </div>
         </PageSection>
@@ -128,10 +128,10 @@ export default function Home() {
           <div className="p-4">
             <button
               type="button"
-              className={componentStyles.btn}
+              className={styleBtn.base}
             >
               <span>Lihat lebih banyak</span>
-              <ArrowRight16 className={componentStyles.btn__icon} />
+              <ArrowRight16 className={styleBtn.__icon} />
             </button>
           </div>
         </PageSection>

@@ -1,6 +1,6 @@
-import '../styles/global.sass';
+import 'styles/global.sass';
 import type { AppProps } from 'next/app';
-import GlobalStyles from '../components/GlobalStyles';
+import GlobalStyles from 'components/GlobalStyles';
 
 const App = ({ Component, pageProps }: AppProps) => (
   <>
