@@ -1,6 +1,4 @@
-import '../styles/fonts.css';
-import '../styles/style.sass';
-import 'tailwindcss/tailwind.css';
+import '../styles/global.sass';
 import type { AppProps } from 'next/app';
 import GlobalStyles from '../components/GlobalStyles';
 

@@ -8,6 +8,7 @@ import BaseFooter from '../components/BaseFooter';
 import CardMerch from '../components/CardMerch';
 import CardNews from '../components/Home/CardNews';
 import styles from '../styles/Home.module.sass';
+import componentStyles from '../styles/components.module.sass';
 
 export default function Home() {
   const [toggleMenu, setToggleMenu] = useState(true);
@@ -85,10 +86,10 @@ export default function Home() {
           <div className="p-4">
             <button
               type="button"
-              className="btn"
+              className={componentStyles.btn}
             >
               <span>Lihat semua</span>
-              <ArrowRight16 />
+              <ArrowRight16 className={componentStyles.btn__icon} />
             </button>
           </div>
         </PageSection>
@@ -102,10 +103,10 @@ export default function Home() {
           <div className="p-4">
             <button
               type="button"
-              className="btn--fill"
+              className={componentStyles['btn--push']}
             >
               <span>Pelajari lebih lanjut</span>
-              <ArrowRight16 />
+              <ArrowRight16 className={componentStyles.btn__icon} />
             </button>
           </div>
         </PageSection>
@@ -127,10 +128,10 @@ export default function Home() {
           <div className="p-4">
             <button
               type="button"
-              className="btn"
+              className={componentStyles.btn}
             >
               <span>Lihat lebih banyak</span>
-              <ArrowRight16 />
+              <ArrowRight16 className={componentStyles.btn__icon} />
             </button>
           </div>
         </PageSection>
@@ -140,48 +141,8 @@ export default function Home() {
           bgDark
           className="bg-primary-800"
         >
-          <div className="grid grid-cols-6 auto-rows-[5rem] gap-2">
-            <div className="relative col-span-2 row-span-4">
-              <Image
-                src="https://picsum.photos/seed/picsum/200/300"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-
-            <div className="relative col-span-4 row-span-3">
-              <Image
-                src="https://picsum.photos/seed/picsum/200/300"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-
-            <div className="relative col-span-4 row-span-3">
-              <Image
-                src="https://picsum.photos/seed/picsum/200/300"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-
-            <div className="relative col-span-2 row-span-4">
-              <Image
-                src="https://picsum.photos/seed/picsum/200/300"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-
-            <div className="relative col-span-2 row-span-2">
-              <Image
-                src="https://picsum.photos/seed/picsum/200/300"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-
-            <div className="relative col-span-2 row-span-2">
+          <div className="grid grid-cols-12 auto-rows-[5rem] gap-2">
+            <div className="relative col-span-6 row-span-4">
               <Image
                 src="https://picsum.photos/seed/picsum/200/300"
                 layout="fill"
@@ -190,6 +151,46 @@ export default function Home() {
             </div>
 
             <div className="relative col-span-6 row-span-3">
+              <Image
+                src="https://picsum.photos/seed/picsum/200/300"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+
+            <div className="relative col-span-6 row-span-3">
+              <Image
+                src="https://picsum.photos/seed/picsum/200/300"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+
+            <div className="relative col-span-6 row-span-4">
+              <Image
+                src="https://picsum.photos/seed/picsum/200/300"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+
+            <div className="relative col-span-3 row-span-2">
+              <Image
+                src="https://picsum.photos/seed/picsum/200/300"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+
+            <div className="relative col-span-3 row-span-2">
+              <Image
+                src="https://picsum.photos/seed/picsum/200/300"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+
+            <div className="relative col-span-12 row-span-3">
               <Image
                 src="https://picsum.photos/seed/picsum/200/300"
                 layout="fill"

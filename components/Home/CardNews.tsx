@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { ArrowRight16 } from '@carbon/icons-react';
+import componentStyles from '../../styles/components.module.sass';
 import 'twin.macro';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
@@ -41,9 +42,9 @@ const CardNews = ({
       <div className="pt-4 flex">
         <a
           href={url}
-          className="btn"
+          className={componentStyles['btn--flat']}
         >
-          <ArrowRight16 />
+          <ArrowRight16 className={componentStyles.btn__icon} />
           <span className="font-medium text-sm">Selengkapnya</span>
         </a>
       </div>

@@ -1,4 +1,7 @@
 {
+  // lang related
+  "scss.validate": false,
+  // extensions
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
@@ -21,6 +24,7 @@
     "typescriptreact": "javascript"
   },
   "conventionalCommits.scopes": [
-    "page"
+    "page",
+    "ui"
   ]
 }

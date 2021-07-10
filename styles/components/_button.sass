@@ -1,12 +1,30 @@
 .btn
-  @apply px-4 py-2 font-medium text-sm text-primary-200 rounded-md flex items-center gap-x-2 transition-colors
+  @apply relative px-4 py-2 font-medium text-sm text-primary-200 bg-primary-200 bg-opacity-10 rounded-full outline-none flex items-center gap-x-2 transition-all
+
+  &__icon
+    @apply transition-transform
 
   &:hover
-    @apply bg-primary-200/10
+    @apply bg-opacity-20
 
-  &--fill
+  &:hover &__icon
+    @apply translate-x-1
+
+  &:active, &:focus
+    @apply outline-none ring ring-primary-200 ring-opacity-70
+
+
+  &--flat
     @extend .btn
-    @apply bg-white rounded-full shadow
+    @apply bg-transparent
+
+    &:hover
+      @apply bg-primary-100 bg-opacity-10
+
+
+  &--push
+    @extend .btn
+    @apply bg-white shadow
 
     &:hover
       @apply bg-gray-100
