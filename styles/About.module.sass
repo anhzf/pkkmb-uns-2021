@@ -1,0 +1,10 @@
+.bigQuote
+  @apply self-center max-w-md my-8 relative p-4 font-bold text-4xl text-primary-600 italic
+
+  &::before
+    content: '\201C'
+    @apply text-7xl
+
+  &::after
+    content: ''
+    @apply absolute top-1/2 left-1/2 bottom-1/2 right-1/2 pointer-events-none w-72 h-96 bg-primary-200 bg-opacity-20 -translate-x-1/2 -translate-y-1/2 rotate-[-80deg]

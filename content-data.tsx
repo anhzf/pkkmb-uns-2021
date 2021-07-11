@@ -40,4 +40,12 @@ export const contactPersons: ContactPerson[] = [
 ];
 
 // pages/index
-export const aboutPkkmb = 'PKKMB UNS merupakan wadah akselerasi adaptasi kampus untuk mahasiswa baru. Mengusung tema Mahasura Muda sebagai manifestasi harapan agar mahasiswa baru UNS tumbuh menjadi insan pembelajar, pencipta, dan penggerak!';
+
+export const Home = {
+  aboutPkkmb: 'PKKMB UNS merupakan wadah akselerasi adaptasi kampus untuk mahasiswa baru. Mengusung tema Mahasura Muda sebagai manifestasi harapan agar mahasiswa baru UNS tumbuh menjadi insan pembelajar, pencipta, dan penggerak!',
+};
+
+// pages/tentang
+export const Tentang = {
+  aboutPkkmb: 'PKKMB UNS merupakan akronim dari Pengenalan Kehidupan Kampus Mahasiswa Baru Universitas Sebelas Maret. Tujuan kegiatan ini adalah sebagai akselerasi adaptasi mahasiswa baru UNS terhadap dunia kampus dimana antara dunia sekolah dan dunia kuliah akan terasa sangat berbeda.',
+};

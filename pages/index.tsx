@@ -71,7 +71,7 @@ export default function Home() {
         title="Sekilas PKKMB UNS"
         className="bg-primary-100"
       >
-        <p className="max-w-prose py-8 font-medium text-lg text-primary-900">{content.aboutPkkmb}</p>
+        <p className="max-w-prose py-8 font-medium text-lg text-primary-900">{content.Home.aboutPkkmb}</p>
 
         <div className="p-4">
           <button

@@ -12,6 +12,13 @@ interface SectionListItemProps extends React.HTMLAttributes<HTMLLIElement> {
   icon?: ReactNode;
 }
 
+const navItems: {url: string; label: string}[] = [
+  { label: 'Tentang', url: '/tentang' },
+  { label: 'Berita', url: '#' },
+  { label: 'Toko', url: '#' },
+  { label: 'Credits', url: '#' },
+];
+
 const SectionList = ({ title, children, ...props }: SectionListProps) => (
   <section
     tw="py-4"
@@ -30,7 +37,7 @@ const SectionListItem = ({
   <li {...props}>
     <a
       href={url}
-      className="font-bold leading-6 flex items-center gap-x-4"
+      className="font-bold text-white leading-6 flex items-center gap-x-4 hover:text-primary-200"
     >
       {icon}
       {children}
@@ -74,21 +81,14 @@ const BaseFooter = (props: React.HTMLAttributes<HTMLElement>) => (
     </SectionList>
 
     <SectionList title="Navigasi">
-      <SectionListItem url="/">
-        Tentang
-      </SectionListItem>
-
-      <SectionListItem url="/">
-        Berita
-      </SectionListItem>
-
-      <SectionListItem url="/">
-        Toko
-      </SectionListItem>
-
-      <SectionListItem url="/">
-        Credits
-      </SectionListItem>
+      {navItems.map(({ label, url }) => (
+        <SectionListItem
+          key={label}
+          url={url}
+        >
+          {label}
+        </SectionListItem>
+      ))}
     </SectionList>
 
     <section className="pt-8 flex justify-center">
