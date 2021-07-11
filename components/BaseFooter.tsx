@@ -1,4 +1,5 @@
-import { SiTiktok, SiInstagram, SiWhatsapp } from 'react-icons/si';
+import { SiWhatsapp } from 'react-icons/si';
+import * as content from '@/content-data';
 import 'twin.macro';
 import type { ReactNode } from 'react';
 
@@ -47,28 +48,29 @@ const BaseFooter = (props: React.HTMLAttributes<HTMLElement>) => (
     </section>
 
     <SectionList title="Media Sosial">
-      <SectionListItem
-        url="https://www.tiktok.com/@generasiuns"
-        icon={<SiTiktok />}
-      >
-        @generasiuns
-      </SectionListItem>
-
-      <SectionListItem
-        url="https://www.instagram.com/generasiuns"
-        icon={<SiInstagram />}
-      >
-        @generasiuns
-      </SectionListItem>
+      {content.socmed.map(({
+        name, label, url, icon: Icon,
+      }) => (
+        <SectionListItem
+          key={name}
+          url={url}
+          icon={<Icon />}
+        >
+          {label}
+        </SectionListItem>
+      ))}
     </SectionList>
 
     <SectionList title="Narahubung">
-      <SectionListItem
-        url="https://www.wa.me/6281299724412"
-        icon={<SiWhatsapp />}
-      >
-        62812 9972 4412 (Ibad - Ketua)
-      </SectionListItem>
+      {content.contactPersons.map(({ name, label, url }) => (
+        <SectionListItem
+          key={name}
+          url={url}
+          icon={<SiWhatsapp />}
+        >
+          {label}
+        </SectionListItem>
+      ))}
     </SectionList>
 
     <SectionList title="Navigasi">
