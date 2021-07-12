@@ -44,7 +44,11 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/jsx-max-props-per-line': [1, { maximum: 1, when: 'always' }],
     // code style
-    'max-len': ['warn', { code: 150 }],
+    'max-len': ['warn', {
+      code: 150,
+      // will ignore everything inside html attrs
+      ignorePattern: '[\\w-]+="([^"]*)"',
+    }],
     'no-underscore-dangle': 'off',
   },
 };

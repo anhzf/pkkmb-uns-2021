@@ -1,11 +1,11 @@
 import Link from 'next/link';
+import { Transition } from '@headlessui/react';
+import { ArrowRight20, ChevronDown20 } from '@carbon/icons-react';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
-import * as content from '@/content-data';
 import Accordion from 'components/Accordion';
+import * as content from '@/content-data';
 import 'twin.macro';
-import { ArrowRight20, ChevronDown20 } from '@carbon/icons-react';
-import { Transition } from '@headlessui/react';
 
 export default function Tentang() {
   return (

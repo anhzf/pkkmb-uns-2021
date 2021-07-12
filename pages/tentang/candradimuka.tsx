@@ -5,8 +5,8 @@ import { Transition } from '@headlessui/react';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
 import Accordion from 'components/Accordion';
-import styles from 'styles/About.module.sass';
 import shimmer, { toBase64 } from 'components/Shimmer';
+import styles from 'styles/About.module.sass';
 
 export default function Candradimuka() {
   return (
