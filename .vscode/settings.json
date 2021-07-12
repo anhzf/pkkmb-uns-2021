@@ -25,6 +25,7 @@
   },
   "conventionalCommits.scopes": [
     "page",
-    "ui"
+    "ui",
+    "ux"
   ]
 }

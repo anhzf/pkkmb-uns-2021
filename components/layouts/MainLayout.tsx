@@ -1,5 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { Transition } from '@headlessui/react';
 import BaseFooter from 'components/BaseFooter';
 import styleNavbar from 'styles/components/navbar.module.sass';
 
@@ -8,8 +10,23 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function MainLayout({ title, children, ...props }: Props) {
+  const router = useRouter();
+  const [isPageLoading, setIsPageLoading] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(true);
   const pageTitle = useMemo(() => [title, 'PKKMB UNS 2021'].filter(Boolean).join(' - '), [title]);
+
+  useEffect(() => {
+    const routeChangeStartHandler = () => setIsPageLoading(true);
+    const routeChangeCompleteHandler = () => setIsPageLoading(false);
+
+    router.events.on('routeChangeStart', routeChangeStartHandler);
+    router.events.on('routeChangeComplete', routeChangeCompleteHandler);
+
+    return () => {
+      router.events.off('routeChangeStart', routeChangeStartHandler);
+      router.events.off('routeChangeComplete', routeChangeCompleteHandler);
+    };
+  }, []);
 
   return (
     <div
@@ -28,21 +45,52 @@ export default function MainLayout({ title, children, ...props }: Props) {
         />
       </Head>
 
-      <nav className="fixed top-0 right-0 p-5">
+      <nav className="fixed top-0 right-0 z-50 p-5">
         <button
           type="button"
           onClick={() => setToggleMenu(!toggleMenu)}
-          className="h-10"
+          className="h-16 p-2 bg-primary-200/40 backdrop-blur rounded-full border border-primary-100"
         >
           <div className={toggleMenu ? styleNavbar.hamburger : styleNavbar.hamburger_close} />
         </button>
       </nav>
 
-      <main className="w-full max-w-screen-sm bg-white shadow-xl flex flex-col items-stretch">
-        {children}
+      <main className="overflow-hidden w-full max-w-screen-sm bg-white shadow-xl flex flex-col items-stretch">
+        <div className="relative w-full flex flex-col items-stretch animate__animated animate__slideInLeft">
+          {children}
+        </div>
       </main>
 
       <BaseFooter className="max-w-screen-sm shadow-xl" />
+
+      <Transition
+        as="div"
+        show={isPageLoading}
+        enterFrom="translate-y-full"
+        leaveTo="translate-y-full"
+        className="fixed z-50 cursor-wait w-full max-w-screen-sm h-full bg-white/40 backdrop-blur flex flex-col justify-evenly items-center transition-transform"
+      >
+        <svg
+          className="animate-spin h-10 w-10 text-primary-900"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          />
+        </svg>
+      </Transition>
     </div>
   );
 }

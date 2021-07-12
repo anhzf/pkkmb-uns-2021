@@ -2,6 +2,7 @@ import { SiWhatsapp } from 'react-icons/si';
 import * as content from '@/content-data';
 import 'twin.macro';
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 
 interface SectionListProps extends React.HTMLAttributes<HTMLElement> {
   title: string;
@@ -13,6 +14,7 @@ interface SectionListItemProps extends React.HTMLAttributes<HTMLLIElement> {
 }
 
 const navItems: {url: string; label: string}[] = [
+  { label: 'Beranda', url: '/' },
   { label: 'Tentang', url: '/tentang' },
   { label: 'Berita', url: '#' },
   { label: 'Toko', url: '#' },
@@ -35,13 +37,13 @@ const SectionListItem = ({
   url, children, icon, ...props
 }: SectionListItemProps) => (
   <li {...props}>
-    <a
-      href={url}
-      className="font-bold text-white leading-6 flex items-center gap-x-4 hover:text-primary-200"
-    >
-      {icon}
-      {children}
-    </a>
+    <Link href={url}>
+      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+      <a className="font-bold text-white leading-6 flex items-center gap-x-4 hover:text-primary-200">
+        {icon}
+        {children}
+      </a>
+    </Link>
   </li>
 );
 
