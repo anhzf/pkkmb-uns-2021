@@ -6,6 +6,7 @@ import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
 import Accordion from 'components/Accordion';
 import styles from 'styles/About.module.sass';
+import shimmer, { toBase64 } from 'components/Shimmer';
 
 export default function Candradimuka() {
   return (
@@ -23,6 +24,8 @@ export default function Candradimuka() {
             height={300}
             layout="responsive"
             objectFit="scale-down"
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(400, 300))}`}
           />
         </div>
 
