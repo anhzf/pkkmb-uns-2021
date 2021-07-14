@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import YouTube from 'react-youtube';
 import { ArrowDown32, ArrowRight16 } from '@carbon/icons-react';
 import MainLayout from 'components/layouts/MainLayout';
@@ -7,7 +8,6 @@ import CardMerch from 'components/CardMerch';
 import CardNews from 'components/Home/CardNews';
 import * as content from '@/content-data';
 import styleBtn from 'styles/components/button.module.sass';
-import Link from 'next/link';
 
 export default function Home() {
   return (
