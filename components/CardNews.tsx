@@ -14,12 +14,13 @@ const CardNews = ({
   title, desc, meta = [], thumbnailSrc, children, ...props
 }: Props) => (
   <article
-    tw="overflow-hidden relative rounded-lg border-t border-gray-100 shadow"
+    title="klik untuk membaca"
+    tw="overflow-hidden relative rounded-lg border-t border-gray-100 shadow transition-shadow hover:shadow-xl"
     {...props}
   >
     <Link href="/postingan/asdasd">
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <a className="w-full h-40 bg-white transition-colors grid grid-cols-3 hover:bg-yellow-50">
+      <a className="w-full h-40 bg-white transition-colors grid grid-cols-3 hover:bg-gray-50">
         <div className="relative">
           <Image
             src={thumbnailSrc}

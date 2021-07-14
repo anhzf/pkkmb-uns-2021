@@ -1,10 +1,10 @@
 .base
-  @apply relative px-4 py-2 font-medium text-sm text-primary-200 bg-primary-200 bg-opacity-10 rounded-full outline-none flex items-center gap-x-2 transition-all
+  @apply relative w-max px-4 py-2 font-medium text-sm text-primary-200 bg-primary-200 bg-opacity-10 rounded-full outline-none flex items-center gap-x-2 transition-all
   &:hover
     @apply bg-opacity-20
   &:hover .__icon
     @apply translate-x-1
-  &:hover .__icon:first-child
+  &:hover .__icon_hoverToLeft
     @apply -translate-x-1
   &:active, &:focus
     @apply outline-none ring ring-primary-200 ring-opacity-70

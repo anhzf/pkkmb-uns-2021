@@ -14,7 +14,7 @@ const CardNews = ({
   title, meta, thumbnailSrc, url = '#', ...props
 }: Props) => (
   <article
-    tw="overflow-hidden max-w-xs bg-white border-l border-gray-100 rounded-lg shadow flex flex-col"
+    tw="overflow-hidden max-w-xs bg-white border-l border-gray-100 rounded-xl shadow flex flex-col"
     {...props}
   >
     <Image

@@ -7,6 +7,7 @@ import CardMerch from 'components/CardMerch';
 import CardNews from 'components/Home/CardNews';
 import * as content from '@/content-data';
 import styleBtn from 'styles/components/button.module.sass';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -27,7 +28,7 @@ export default function Home() {
 
         <div className="overflow-hidden flex-shrink sm:px-3 py-4 flex flex-col">
           <h1 className="my-2 font-bold leading-[.8] text-8xl text-gray-900">PKKMB UNS 2021</h1>
-          <h2 className="font-bold leading-snug tracking-wide text-5xl text-primary-600">CANDRADIMUKA</h2>
+          <h2 className="font-bold leading-snug tracking-wide text-5xl text-primary-900">CANDRADIMUKA</h2>
         </div>
 
         {/* <div className="self-center w-12 h-12 bg-primary-darken-2 flex flex-col items-center">
@@ -45,22 +46,23 @@ export default function Home() {
             <li key={i}>
               <CardNews
                 title="Skuyyy! ikut PKKMB dapet sertifikat lho!!"
+                url="/postingan/lorem-keren!!"
                 thumbnailSrc="https://picsum.photos/seed/picsum/200/300"
                 meta={['Berita', '20 Agustus 2001']}
-                className="w-[max-content]"
+                className="w-max"
               />
             </li>
           ))}
         </ul>
 
         <div className="p-4">
-          <button
-            type="button"
-            className={styleBtn.base}
-          >
-            <span>Lihat semua</span>
-            <ArrowRight16 className={styleBtn.__icon} />
-          </button>
+          <Link href="/postingan">
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a className={styleBtn.base}>
+              <span>Lihat semua</span>
+              <ArrowRight16 className={styleBtn.__icon} />
+            </a>
+          </Link>
         </div>
       </PageSection>
 
@@ -71,13 +73,13 @@ export default function Home() {
         <p className="max-w-prose py-8 font-medium text-lg text-primary-900">{content.Home.aboutPkkmb}</p>
 
         <div className="p-4">
-          <button
-            type="button"
-            className={styleBtn.push}
-          >
-            <span>Pelajari lebih lanjut</span>
-            <ArrowRight16 className={styleBtn.__icon} />
-          </button>
+          <Link href="/tentang">
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a className={styleBtn.push}>
+              <span>Pelajari lebih lanjut</span>
+              <ArrowRight16 className={styleBtn.__icon} />
+            </a>
+          </Link>
         </div>
       </PageSection>
 
@@ -96,13 +98,13 @@ export default function Home() {
         </ul>
 
         <div className="p-4">
-          <button
-            type="button"
-            className={styleBtn.base}
-          >
-            <span>Lihat lebih banyak</span>
-            <ArrowRight16 className={styleBtn.__icon} />
-          </button>
+          <Link href="/toko">
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a className={styleBtn.base}>
+              <span>Lihat lebih banyak</span>
+              <ArrowRight16 className={styleBtn.__icon} />
+            </a>
+          </Link>
         </div>
       </PageSection>
 
