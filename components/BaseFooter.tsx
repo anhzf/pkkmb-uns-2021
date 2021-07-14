@@ -17,7 +17,7 @@ const navItems: {url: string; label: string}[] = [
   { label: 'Beranda', url: '/' },
   { label: 'Tentang', url: '/tentang' },
   { label: 'Berita', url: '/postingan' },
-  { label: 'Toko', url: '/toko' },
+  { label: 'Merchandise', url: '/toko' },
   { label: 'Credits', url: '/credits' },
 ];
 

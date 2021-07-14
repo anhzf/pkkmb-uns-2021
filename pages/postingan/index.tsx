@@ -3,6 +3,7 @@ import Scrollbars from 'react-custom-scrollbars';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
 import CardNews from 'components/CardNews';
+import { HorizontalThumb } from 'components/Scrollbar';
 import * as Category from 'components/Postingan/Category';
 import styleBtn from 'styles/components/button.module.sass';
 
@@ -31,12 +32,7 @@ export default function Postingan() {
           <Scrollbars
             autoHeight
             autoHide
-            renderThumbHorizontal={(props) => (
-              <div
-                {...props}
-                className="h-3 bg-gray-400/60 rounded"
-              />
-            )}
+            renderThumbHorizontal={(props) => <HorizontalThumb {...props} />}
             universal
             className="relative w-full"
           >

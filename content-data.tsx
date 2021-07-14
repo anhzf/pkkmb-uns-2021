@@ -35,7 +35,7 @@ export const contactPersons: ContactPerson[] = [
   {
     name: 'ketua',
     label: '62812 9972 4412 (Ibad - Ketua)',
-    url: 'https://www.wa.me/6281299724412',
+    url: 'https://wa.me/6281299724412',
   },
 ];
 

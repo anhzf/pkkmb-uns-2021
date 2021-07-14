@@ -39,10 +39,7 @@ export default function Home() {
         </div>
       </header>
 
-      <PageSection
-        title="Informasi Terbaru"
-        className="bg-white"
-      >
+      <PageSection title="Informasi Terbaru">
         <ul className="overflow-x-auto py-8 flex flex-nowrap gap-x-4">
           {Array.from(Array(5), (el, i) => (
             <li key={i}>

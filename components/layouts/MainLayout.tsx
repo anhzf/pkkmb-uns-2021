@@ -49,13 +49,13 @@ export default function MainLayout({ title, children, ...props }: Props) {
         <button
           type="button"
           onClick={() => setToggleMenu(!toggleMenu)}
-          className="h-16 p-2 bg-primary-200/40 backdrop-blur rounded-full border border-primary-100"
+          className="h-16 p-2 bg-brand-1/20 backdrop-blur rounded-full"
         >
           <div className={toggleMenu ? styleNavbar.hamburger : styleNavbar.hamburger_close} />
         </button>
       </nav>
 
-      <main className="overflow-hidden w-full max-w-screen-sm bg-white shadow-xl flex flex-col items-stretch">
+      <main className="overflow-hidden w-full max-w-screen-sm bg-yellow-50 shadow-xl flex flex-col items-stretch">
         <div className="relative w-full flex flex-col items-stretch animate__animated animate__slideInLeft">
           {children}
         </div>
