@@ -50,5 +50,6 @@ module.exports = {
       ignorePattern: '[\\w-]+="([^"]*)"',
     }],
     'no-underscore-dangle': 'off',
+    'func-names': 'off',
   },
 };

@@ -1,30 +1,50 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import shimmer, { toBase64 } from 'components/Shimmer';
+import Skeleton from 'components/Skeleton';
 import 'twin.macro';
 
 interface Props extends React.HTMLProps<HTMLElement> {
   title: string;
   desc?: string;
-  meta?: string[];
   thumbnailSrc: string;
+  slug: string;
+  meta?: string[];
 }
 
-const CardNews = ({
-  title, desc, meta = [], thumbnailSrc, children, ...props
+const CardLoading = () => (
+  <div className="w-full h-40 bg-white rounded-lg border-t border-gray-100 shadow grid grid-cols-3">
+    <Skeleton className="w-full h-full !rounded-r-none" />
+    <div className="col-span-2 p-4 flex flex-col justify-between">
+      <div className="flex flex-col gap-y-2">
+        <Skeleton className="w-full h-4" />
+        <Skeleton className="w-2/3 h-4" />
+      </div>
+
+      <div className="flex gap-x-1">
+        <Skeleton className="w-8 h-4" />
+        <Skeleton className="w-8 h-4" />
+      </div>
+    </div>
+  </div>
+);
+
+const CardNews = Object.assign(({
+  title, desc, thumbnailSrc, slug, meta = [], children, ...props
 }: Props) => (
   <article
     title="klik untuk membaca"
     tw="overflow-hidden relative rounded-lg border-t border-gray-100 shadow transition-shadow hover:shadow-xl"
     {...props}
   >
-    <Link href="/postingan/asdasd">
+    <Link href={`/postingan/${slug}`}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a className="w-full h-40 bg-white transition-colors grid grid-cols-3 hover:bg-gray-50">
         <div className="relative">
           <Image
             src={thumbnailSrc}
             layout="fill"
+            objectFit="cover"
             placeholder="blur"
             blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(400, 300))}`}
             className="w-full h-full"
@@ -54,6 +74,8 @@ const CardNews = ({
       </a>
     </Link>
   </article>
-);
+), {
+  Loading: CardLoading,
+});
 
 export default CardNews;

@@ -109,7 +109,7 @@ export default function Merch() {
         <div className="p-4">
           <Link href="/toko">
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a>
+            <a className={styleBtn.base}>
               <ArrowLeft16 className={styleBtn.__icon_hoverToLeft} />
               <span>Kembali ke katalog</span>
             </a>

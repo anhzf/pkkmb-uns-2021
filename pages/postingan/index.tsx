@@ -1,21 +1,55 @@
+import { useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Scrollbars from 'react-custom-scrollbars';
+import { Post } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
 import CardNews from 'components/CardNews';
 import { HorizontalThumb } from 'components/Scrollbar';
+import Skeleton from 'components/Skeleton';
 import * as Category from 'components/Postingan/Category';
+import { usePaginatedPosts } from 'hooks/contentful';
 import styleBtn from 'styles/components/button.module.sass';
 
-const categories: {name: string; label?: string;}[] = [
-  { name: 'artikel' },
-  { name: 'penugasan' },
-  { name: 'acara' },
-];
+const selectOperator = 'sys.id,sys.createdAt,fields.slug,fields.judul,fields.deskripsi,fields.thumbnail,fields.kategori';
 
 export default function Postingan() {
-  const { query } = useRouter();
-  const isMatchCategory = (name: any) => query.kategori === name;
+  const router = useRouter();
+  const [query] = useState({ select: selectOperator, limit: 3 });
+  // force all ui to loading states (just for development)
+  const [forceLoading] = useState(false);
+  const {
+    dataPool, next: nextPage, isDone, isLoading,
+  } = usePaginatedPosts(query);
+  const posts = useMemo(
+    () => Object.values(dataPool).flat(),
+    [dataPool],
+  );
+  const categories = useMemo(
+    () => Array.from(new Set(posts ? Post.getCategories(posts) : [])),
+    [posts],
+  );
+  const postList = useMemo(() => [
+    ...(posts.map((el) => (
+      <CardNews
+        key={el.sys.id}
+        title={el.fields.judul}
+        desc={el.fields.deskripsi}
+        thumbnailSrc={`https:${el.fields.thumbnail.fields.file.url}`}
+        slug={el.fields.slug}
+        meta={Post.resolveMeta(el)}
+      />
+    ))),
+    // skeleton
+    ...Array.from(
+      Array((forceLoading || isLoading) ? 3 : 0),
+      (el, i) => <CardNews.Loading key={i} />,
+    ),
+  ], [forceLoading, isLoading, posts]);
+  const isMatchCategory = useCallback(
+    (name: any) => router.query.kategori === name,
+    [router.query],
+  );
 
   return (
     <MainLayout title="Postingan">
@@ -37,39 +71,47 @@ export default function Postingan() {
             className="relative w-full"
           >
             <div className="w-full px-2 py-4 flex gap-x-4">
-              <Category.Item active={isMatchCategory(undefined)}>semua</Category.Item>
-              {categories.map((el) => (
-                <Category.Item
-                  key={el.name}
-                  name={el.name}
-                  active={isMatchCategory(el.name)}
-                >
-                  {el.label ?? el.name}
-                </Category.Item>
-              ))}
+              {(!forceLoading || isLoading) && posts?.length
+                ? (
+                  <>
+                    <Category.Item active={isMatchCategory(undefined)}>semua</Category.Item>
+                    {categories.map((el) => (
+                      <Category.Item
+                        key={el}
+                        name={el}
+                        active={isMatchCategory(el)}
+                      >
+                        {el}
+                      </Category.Item>
+                    ))}
+                  </>
+                )
+                : Array.from(Array(3), (el, i) => (
+                  <Skeleton
+                    key={i}
+                    className="self-stretch w-16 h-10 !rounded-xl"
+                  />
+                ))}
             </div>
           </Scrollbars>
         </div>
 
         <div className="flex flex-col gap-y-10">
-          {Array.from(Array(5), (el, i) => (
-            <CardNews
-              key={i}
-              title="Skuyy ikut PKKMB dapet Sertifikat lhoo!!"
-              thumbnailSrc="https://picsum.photos/200/200"
-              desc="Yuk intip benefit apa aja kalau kamu  mengikuti rangkaian acara PKKMB nanti..."
-              meta={['Berita', '20 Agustus 2021']}
-            />
-          ))}
+          {postList}
         </div>
 
         <div className="p-4 flex justify-center">
-          <button
-            type="button"
-            className={styleBtn.flat}
-          >
-            Muat lebih banyak
-          </button>
+          {isDone
+            ? <span className="font-medium text-gray-400">Tidak ada yang dapat ditampilkan lagi 😁🙏</span>
+            : (
+              <button
+                type="button"
+                className={styleBtn.flat}
+                onClick={nextPage}
+              >
+                Muat lebih banyak
+              </button>
+            )}
         </div>
       </PageSection>
     </MainLayout>

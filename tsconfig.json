@@ -18,6 +18,8 @@
       "pages/*": ["pages/*"],
       "components/*": ["components/*"],
       "styles/*": ["styles/*"],
+      "hooks/*": ["hooks/*"],
+      "app/*": ["app/*"],
       "@/*": ["*"],
     }
   },

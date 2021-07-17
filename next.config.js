@@ -1,7 +1,10 @@
 module.exports = {
   // reactStrictMode: true,
   images: {
-    domains: ['picsum.photos'],
+    domains: [
+      'picsum.photos',
+      'images.ctfassets.net',
+    ],
   },
   webpack: (config) => ({
     ...config,
