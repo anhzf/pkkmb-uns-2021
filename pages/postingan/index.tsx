@@ -15,7 +15,7 @@ const selectOperator = 'sys.id,sys.createdAt,fields.slug,fields.judul,fields.des
 
 export default function Postingan() {
   const router = useRouter();
-  const [query] = useState({ select: selectOperator, limit: 3 });
+  const [query] = useState({ select: selectOperator, limit: 10 });
   // force all ui to loading states (just for development)
   const [forceLoading] = useState(false);
   const {
@@ -35,7 +35,7 @@ export default function Postingan() {
         key={el.sys.id}
         title={el.fields.judul}
         desc={el.fields.deskripsi}
-        thumbnailSrc={`https:${el.fields.thumbnail.fields.file.url}`}
+        thumbnailSrc={Post.resolveThumbnailUrl(el)}
         slug={el.fields.slug}
         meta={Post.resolveMeta(el)}
       />

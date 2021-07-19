@@ -26,6 +26,7 @@
   "conventionalCommits.scopes": [
     "page",
     "ui",
-    "ux"
+    "ux",
+    "hooks"
   ]
 }

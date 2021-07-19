@@ -53,7 +53,7 @@ export default function Artikel({ post }: InferGetStaticPropsType<typeof getStat
 
       <div className="relative w-full h-96 py-16 mt-16">
         <Image
-          src={`https:${post.fields.thumbnail.fields.file.url}`}
+          src={Post.resolveThumbnailUrl(post)}
           layout="fill"
           placeholder="blur"
           blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(400, 300))}`}
@@ -125,7 +125,7 @@ export default function Artikel({ post }: InferGetStaticPropsType<typeof getStat
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a className={styleBtn.base}>
               <ArrowLeft16 className={styleBtn.__icon_hoverToLeft} />
-              <span>Kembali ke berita</span>
+              <span>Lihat berita lainnya</span>
             </a>
           </Link>
         </div>

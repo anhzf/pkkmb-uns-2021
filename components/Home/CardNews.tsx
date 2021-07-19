@@ -2,16 +2,17 @@ import Image from 'next/image';
 import { ArrowRight16 } from '@carbon/icons-react';
 import styleBtn from 'styles/components/button.module.sass';
 import 'twin.macro';
+import Link from 'next/link';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   title: string;
   thumbnailSrc: string;
   meta: string[];
-  url?: string;
+  slug?: string;
 }
 
 const CardNews = ({
-  title, meta, thumbnailSrc, url = '#', ...props
+  title, meta, thumbnailSrc, slug = '#', ...props
 }: Props) => (
   <article
     tw="overflow-hidden max-w-xs bg-white border-l border-gray-100 rounded-xl shadow flex flex-col"
@@ -40,13 +41,13 @@ const CardNews = ({
       </div>
 
       <div className="pt-4 flex">
-        <a
-          href={url}
-          className={styleBtn.flat}
-        >
-          <ArrowRight16 className={styleBtn.__icon} />
-          <span className="font-medium text-sm">Selengkapnya</span>
-        </a>
+        <Link href={`/postingan/${slug}`}>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <a className={styleBtn.flat}>
+            <ArrowRight16 className={styleBtn.__icon} />
+            <span className="font-medium text-sm">Selengkapnya</span>
+          </a>
+        </Link>
       </div>
     </div>
   </article>

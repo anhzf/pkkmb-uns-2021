@@ -1,7 +1,5 @@
 import { Asset, createClient } from 'contentful';
-import type {
-  EntryFields, Entry, AssetCollection, SyncCollection,
-} from 'contentful';
+import type { EntryFields, Entry, AssetCollection } from 'contentful';
 
 export interface PostEntry {
   judul: EntryFields.Text;
@@ -28,8 +26,10 @@ const client = createClient({
   accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_DELIVERY_APIKEY!,
 });
 
-const Post = {
-  CONTENT_TYPE_NAME: 'postingan',
+const createModel = <T>(contentTypeName: string) => ({
+  get CONTENT_TYPE_NAME() {
+    return contentTypeName;
+  },
 
   get baseQuery() {
     return { content_type: this.CONTENT_TYPE_NAME };
@@ -37,7 +37,7 @@ const Post = {
 
   async get(q?: any) {
     const query = { ...q, ...this.baseQuery };
-    const { items } = await client.getEntries<PostEntry>(query);
+    const { items } = await client.getEntries<T>(query);
 
     return items;
   },
@@ -45,6 +45,10 @@ const Post = {
   async getAll() {
     return this.get();
   },
+});
+
+const Post = {
+  ...createModel<PostEntry>('postingan'),
 
   async getAllSlug() {
     const posts = await this.getAll();
@@ -59,30 +63,6 @@ const Post = {
     return post;
   },
 
-  async initPaginatedPosts(q?: any) {
-    const sync = await client.sync({
-      ...q,
-      initial: true,
-      type: 'Entry',
-      ...this.baseQuery,
-    });
-
-    return this._transformPaginatedResponse(sync);
-  },
-
-  async getPaginatedPosts(nextSyncToken: string) {
-    const sync = await client.sync({ nextSyncToken });
-
-    return this._transformPaginatedResponse(sync);
-  },
-
-  _transformPaginatedResponse({ entries, nextSyncToken }: SyncCollection) {
-    return {
-      entries: entries as Entry<PostEntry>[],
-      nextSyncToken,
-    };
-  },
-
   resolveMeta(post: Entry<PostEntry>) {
     return [
       post.fields.kategori,
@@ -95,13 +75,22 @@ const Post = {
     ];
   },
 
+  resolveThumbnailUrl(post: Entry<PostEntry>) {
+    return `https:${post.fields.thumbnail.fields.file.url}`;
+  },
+
   getCategories(posts: Entry<PostEntry>[]) {
     return posts.map((el) => el.fields.kategori);
   },
+};
+
+const Merch = {
+  ...createModel<MerchandiseEntry>('merch'),
 };
 
 export default client;
 
 export {
   Post,
+  Merch,
 };
