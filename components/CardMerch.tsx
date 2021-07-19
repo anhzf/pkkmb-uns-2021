@@ -1,21 +1,30 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import Skeleton from 'components/Skeleton';
 import 'twin.macro';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   name: string;
   price: string;
+  slug: string;
   thumbnailSrc: string;
 }
 
-const CardMerch = ({
-  name, price, thumbnailSrc, ...props
+const CardLoading = () => (
+  <Skeleton className="relative overflow-hidden w-full h-full !rounded-none shadow-sm">
+    <Skeleton className="absolute top-0 left-0 w-28 h-8 !bg-primary-100/50 !rounded-none shadow-sm" />
+    <Skeleton className="absolute bottom-0 left-0 w-16 h-8 !bg-primary-100/50 !rounded-none shadow-sm" />
+  </Skeleton>
+);
+
+const CardMerch = Object.assign(({
+  name, price, slug, thumbnailSrc, ...props
 }: Props) => (
   <article
     tw="relative overflow-hidden shadow-sm w-full h-full"
     {...props}
   >
-    <Link href="/toko/asdad">
+    <Link href={`/toko/${encodeURIComponent(slug)}`}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a className="block w-full h-full">
         <Image
@@ -35,6 +44,8 @@ const CardMerch = ({
       {price}
     </span>
   </article>
-);
+), {
+  Loading: CardLoading,
+});
 
 export default CardMerch;

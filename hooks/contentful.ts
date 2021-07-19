@@ -3,29 +3,31 @@ import {
 } from 'react';
 import useSWR from 'swr';
 import { Merch, Post } from 'app/services/contentful';
-import type { SWRResponse } from 'swr';
+import type { SWRConfiguration, SWRResponse } from 'swr';
 import type { Entry } from 'contentful';
 import type { PostEntry, MerchandiseEntry } from 'app/services/contentful';
 
 // eslint-disable-next-line no-unused-vars
-type TuseModelFn<T> = (key: string, q?: any) => SWRResponse<Entry<T>[], any>;
+export type TuseModelFn<T> = (key: string, q?: any, opts?: SWRConfiguration<Entry<T>[]>) => SWRResponse<Entry<T>[], any>;
 
-interface usePaginatedQueryArg {
+export interface usePaginatedQueryArg {
   limit: number;
   [k: string]: any;
 }
 
-interface usePaginatedOptions<T> {
+export interface usePaginatedOptions<T> {
+  startIndex?: number;
   poolInit?: Record<number, Entry<T>[]>;
+  // loadFetcher?: () => Promise<Entry<T>[]>;
 }
 
 export const usePaginatedModels = <T>(
   useModelFn: TuseModelFn<T>,
   key: string,
   q: usePaginatedQueryArg,
-  { poolInit }: usePaginatedOptions<T> = {},
+  { poolInit, startIndex }: usePaginatedOptions<T> = {},
 ) => {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(startIndex ?? 0);
   const [isLoading, setIsLoading] = useState(true);
   const [dataPool, setDataPool] = useState(poolInit ?? {});
   const [isDone, setIsDone] = useState(false);
@@ -33,7 +35,9 @@ export const usePaginatedModels = <T>(
     ...q,
     skip: index * q.limit,
   }), [q, index]);
-  const { data, ...swr } = useModelFn(key, query);
+  const { data, ...swr } = useModelFn(key, query, {
+    initialData: dataPool[index],
+  });
   const next = useCallback(
     () => setIndex((i) => (isDone ? i : i + 1)),
     [isDone],
@@ -70,18 +74,20 @@ export const usePaginatedModels = <T>(
   };
 };
 
-export const usePosts: TuseModelFn<PostEntry> = (key, q) => useSWR(
+export const usePosts: TuseModelFn<PostEntry> = (key, q, opts) => useSWR(
   [key, q],
   () => Post.get(q),
+  opts,
 );
 
 export const usePaginatedPosts = (q: usePaginatedQueryArg, opts: usePaginatedOptions<PostEntry> = {}) => usePaginatedModels(
   usePosts, 'posts', q, opts,
 );
 
-export const useMerch: TuseModelFn<MerchandiseEntry> = (key, q) => useSWR(
+export const useMerch: TuseModelFn<MerchandiseEntry> = (key, q, opts) => useSWR(
   [key, q],
   () => Merch.get(q),
+  opts,
 );
 
 export const usePaginatedMerch = (q: usePaginatedQueryArg, opts: usePaginatedOptions<MerchandiseEntry> = {}) => usePaginatedModels(

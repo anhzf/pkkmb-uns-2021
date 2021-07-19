@@ -1,32 +1,50 @@
-import { Asset, createClient } from 'contentful';
-import type { EntryFields, Entry, AssetCollection } from 'contentful';
+import { createClient } from 'contentful';
+import type { EntryFields, Entry, Asset } from 'contentful';
 
-export interface PostEntry {
+export interface EntryHasSlug {
+  slug: EntryFields.Text;
+}
+
+export interface PostEntry extends EntryHasSlug {
   judul: EntryFields.Text;
   deskripsi: EntryFields.Text;
   kategori: EntryFields.Text;
   konten: EntryFields.RichText;
   thumbnail: Asset;
   tags: EntryFields.Text[];
-  slug: EntryFields.Text;
   suka: EntryFields.Integer;
 }
 
-export interface MerchandiseEntry {
+export interface MerchandiseEntry extends EntryHasSlug {
   nama: EntryFields.Text;
   harga: EntryFields.Integer;
-  gambar: AssetCollection;
+  deskripsi: EntryFields.RichText;
+  gambar: Asset[];
   tags: EntryFields.Text[];
   spesifikasi: EntryFields.Object<Record<string, unknown>>;
-  slug: EntryFields.Text;
 }
+
+/* eslint-disable no-unused-vars */
+export interface ContentfulModel<T> {
+  readonly CONTENT_TYPE_NAME: string;
+  readonly baseQuery: Record<string, unknown>;
+  get: (q?: any) => Promise<Entry<T>[]>;
+  getAll: () => Promise<Entry<T>[]>;
+}
+/* eslint-enable no-unused-vars */
 
 const client = createClient({
   space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACEID!,
   accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_DELIVERY_APIKEY!,
 });
 
-const createModel = <T>(contentTypeName: string) => ({
+const utils = {
+  resolveFileUrl(url: string) {
+    return `https:${url}`;
+  },
+};
+
+const createModel = <T>(contentTypeName: string): ContentfulModel<T> => ({
   get CONTENT_TYPE_NAME() {
     return contentTypeName;
   },
@@ -35,7 +53,7 @@ const createModel = <T>(contentTypeName: string) => ({
     return { content_type: this.CONTENT_TYPE_NAME };
   },
 
-  async get(q?: any) {
+  async get(q) {
     const query = { ...q, ...this.baseQuery };
     const { items } = await client.getEntries<T>(query);
 
@@ -47,21 +65,25 @@ const createModel = <T>(contentTypeName: string) => ({
   },
 });
 
-const Post = {
-  ...createModel<PostEntry>('postingan'),
-
+const modelSluggable = <T extends EntryHasSlug>(model: ContentfulModel<T>) => ({
   async getAllSlug() {
-    const posts = await this.getAll();
+    const entry = await model.getAll();
 
-    return posts.map(({ fields }) => fields.slug);
+    return entry.map(({ fields }) => fields.slug);
   },
 
   async getBySlug(slug: string) {
     const query = { fields: { slug }, limit: 1 };
-    const [post] = await this.get(query);
+    const [entry] = await model.get(query);
 
-    return post;
+    return entry;
   },
+});
+
+const PostBase = createModel<PostEntry>('postingan');
+const Post = {
+  ...PostBase,
+  ...modelSluggable(PostBase),
 
   resolveMeta(post: Entry<PostEntry>) {
     return [
@@ -76,7 +98,7 @@ const Post = {
   },
 
   resolveThumbnailUrl(post: Entry<PostEntry>) {
-    return `https:${post.fields.thumbnail.fields.file.url}`;
+    return utils.resolveFileUrl(post.fields.thumbnail.fields.file.url);
   },
 
   getCategories(posts: Entry<PostEntry>[]) {
@@ -84,8 +106,25 @@ const Post = {
   },
 };
 
+const MerchBase = createModel<MerchandiseEntry>('merch');
 const Merch = {
-  ...createModel<MerchandiseEntry>('merch'),
+  ...MerchBase,
+  ...modelSluggable(MerchBase),
+
+  resolveThumbnailUrl(merch: Entry<MerchandiseEntry>) {
+    const [img] = merch.fields.gambar;
+    return utils.resolveFileUrl(img.fields.file.url);
+  },
+
+  resolveThumbnailsUrl(merch: Entry<MerchandiseEntry>) {
+    const images = merch.fields.gambar;
+    return images.map((el) => utils.resolveFileUrl(el.fields.file.url));
+  },
+
+  formatPrice(price: number) {
+    const string = price.toString();
+    return `${string.slice(0, string.length - 3)}k`;
+  },
 };
 
 export default client;
@@ -93,4 +132,5 @@ export default client;
 export {
   Post,
   Merch,
+  utils,
 };

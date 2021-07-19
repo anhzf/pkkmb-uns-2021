@@ -4,22 +4,60 @@ import tw from 'twin.macro';
 import Scrollbars from 'react-custom-scrollbars';
 import { SiWhatsapp } from 'react-icons/si';
 import { ArrowLeft16 } from '@carbon/icons-react';
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { Merch } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
 import { HorizontalThumb } from 'components/Scrollbar';
 import * as TableSpecs from 'components/Toko/TableSpecs';
+import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import type { Entry } from 'contentful';
+import type { Document } from '@contentful/rich-text-types';
+import type { MerchandiseEntry } from 'app/services/contentful';
 import styleBtn from 'styles/components/button.module.sass';
+
+const STATIC_PROPS_REVALIDATE_INTERVAL = 1000 * 60 * 30; // 30 minutes
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const slugs = await Merch.getAllSlug();
+
+  return {
+    paths: slugs.map((slug) => ({
+      params: { slug },
+    })),
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<{
+  merch: Entry<MerchandiseEntry>;
+}, {
+  slug: string
+}> = async ({ params }) => {
+  if (typeof params?.slug === 'string') {
+    const merch = await Merch.getBySlug(params?.slug!);
+
+    return {
+      props: { merch },
+      revalidate: STATIC_PROPS_REVALIDATE_INTERVAL,
+    };
+  }
+
+  return {
+    notFound: true,
+  };
+};
 
 const Label = tw.a`px-4 py-2 bg-primary-300 text-yellow-50 rounded-full`;
 
-export default function Merch() {
+export default function MerchDetail({ merch }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <MainLayout title="Geprek Sehat">
+    <MainLayout title={merch.fields.nama}>
       <div className="p-10 pb-0">
         <h1 className="font-bold text-sm text-primary-900 uppercase">TOKO</h1>
       </div>
 
-      <PageSection title="Geprek Sehat">
+      <PageSection title={merch.fields.nama}>
         <div className="relative">
           <Scrollbars
             universal
@@ -34,15 +72,15 @@ export default function Merch() {
               />
             )}
           >
-            {Array.from(Array(5), (el, i) => (
+            {Merch.resolveThumbnailsUrl(merch).map((el) => (
               <li
-                key={i}
+                key={el}
                 className="flex-shrink-0 w-96 h-full"
                 style={{ scrollSnapAlign: 'center' }}
               >
                 <div className="relative aspect-w-10 aspect-h-7 w-full h-full">
                   <Image
-                    src="https://picsum.photos/500/350"
+                    src={el}
                     layout="fill"
                     objectFit="cover"
                   />
@@ -52,12 +90,17 @@ export default function Merch() {
           </Scrollbars>
 
           <span className="absolute left-0 bottom-0 my-4 px-3 py-2 bg-gray-800/80 text-white shadow backdrop-blur-sm">
-            1/4
+            1/
+            {merch.fields.gambar.length}
           </span>
         </div>
 
         <div className="px-4 py-6 border-b border-gray-200 flex justify-between">
-          <span className="font-bold text-2xl text-primary-200">Rp 10k</span>
+          <span className="font-bold text-2xl text-primary-200">
+            Rp
+            {' '}
+            {Merch.formatPrice(merch.fields.harga)}
+          </span>
           <a
             href="https://wa.me/"
             target="_blank"
@@ -70,38 +113,37 @@ export default function Merch() {
         </div>
 
         <div className="px-4 pb-10 border-b border-gray-200 flex flex-col gap-y-10">
-          <div className="font-medium text-gray-700 tracking-wide">
-            <p>Geprek? ya geprek kumlot! awokwowkowk. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          </div>
+          <div
+            className="prose-sm flex flex-col text-gray-700 whitespace-pre-line tracking-wide"
+            dangerouslySetInnerHTML={{ __html: documentToHtmlString(merch.fields.deskripsi as Document) }}
+          />
 
           <div className="flex">
-            <Link
-              href="/toko?kategori=asdasd"
-              passHref
-            >
-              <Label>Makanan</Label>
-            </Link>
+            {merch.fields.tags.map((el) => (
+              <Link
+                key={el}
+                href={`/toko?tags=${encodeURIComponent(el)}`}
+                passHref
+              >
+                <Label>{el}</Label>
+              </Link>
+            ))}
           </div>
 
           <table>
             <tbody>
-              <tr>
-                <TableSpecs.TH>Bahan</TableSpecs.TH>
-                <TableSpecs.TD>Combed 24s</TableSpecs.TD>
-              </tr>
-              <tr>
-                <TableSpecs.TH>Varian</TableSpecs.TH>
-                <TableSpecs.TD>
-                  <ul className="list-disc list-inside">
-                    <li>Vanilla</li>
-                    <li>Cokelat</li>
-                  </ul>
-                </TableSpecs.TD>
-              </tr>
-              <tr>
-                <TableSpecs.TH>Warna</TableSpecs.TH>
-                <TableSpecs.TD>Pinky</TableSpecs.TD>
-              </tr>
+              {Object.entries(merch.fields.spesifikasi).map(([key, val]) => (
+                <tr key={key}>
+                  <TableSpecs.TH>{key}</TableSpecs.TH>
+                  <TableSpecs.TD>
+                    {Array.isArray(val) ? (
+                      <ul className="list-disc list-inside">
+                        {val.map((el) => <li key={el}>{el}</li>)}
+                      </ul>
+                    ) : JSON.stringify(val).replace(/[{"}]/g, '')}
+                  </TableSpecs.TD>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -111,7 +153,7 @@ export default function Merch() {
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a className={styleBtn.base}>
               <ArrowLeft16 className={styleBtn.__icon_hoverToLeft} />
-              <span>Kembali ke katalog</span>
+              <span>Lihat barang lainnya</span>
             </a>
           </Link>
         </div>
