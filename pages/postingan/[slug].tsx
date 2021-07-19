@@ -80,7 +80,7 @@ export default function Artikel({ post }: InferGetStaticPropsType<typeof getStat
         </div>
 
         <div
-          className="prose-sm whitespace-pre-line flex flex-col gap-y-4"
+          className="prose-sm flex flex-col text-gray-700 whitespace-pre-line tracking-wide"
           dangerouslySetInnerHTML={{ __html: documentToHtmlString(post.fields.konten as Document) }}
         />
 

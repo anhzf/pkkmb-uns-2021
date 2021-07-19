@@ -11,13 +11,19 @@ import * as Category from 'components/Postingan/Category';
 import { usePaginatedPosts } from 'hooks/contentful';
 import styleBtn from 'styles/components/button.module.sass';
 
-const selectOperator = 'sys.id,sys.createdAt,fields.slug,fields.judul,fields.deskripsi,fields.thumbnail,fields.kategori';
-
 export default function Postingan() {
   const router = useRouter();
-  const [query] = useState({ select: selectOperator, limit: 10 });
   // force all ui to loading states (just for development)
   const [forceLoading] = useState(false);
+  const query = useMemo(() => ({
+    select: 'sys.id,sys.createdAt,fields.slug,fields.judul,fields.deskripsi,fields.thumbnail,fields.kategori',
+    limit: 10,
+    fields: { kategori: router.query.kategori },
+  }), [router.query]);
+  const isMatchCategory = useCallback(
+    (name: any) => router.query.kategori === name,
+    [router.query],
+  );
   const {
     dataPool, next: nextPage, isDone, isLoading,
   } = usePaginatedPosts(query);
@@ -30,26 +36,24 @@ export default function Postingan() {
     [posts],
   );
   const postList = useMemo(() => [
-    ...(posts.map((el) => (
-      <CardNews
-        key={el.sys.id}
-        title={el.fields.judul}
-        desc={el.fields.deskripsi}
-        thumbnailSrc={Post.resolveThumbnailUrl(el)}
-        slug={el.fields.slug}
-        meta={Post.resolveMeta(el)}
-      />
-    ))),
+    ...(posts
+      .filter((el) => (router.query.kategori ? isMatchCategory(el.fields.kategori) : true))
+      .map((el) => (
+        <CardNews
+          key={el.sys.id}
+          title={el.fields.judul}
+          desc={el.fields.deskripsi}
+          thumbnailSrc={Post.resolveThumbnailUrl(el)}
+          slug={el.fields.slug}
+          meta={Post.resolveMeta(el)}
+        />
+      ))),
     // skeleton
     ...Array.from(
       Array((forceLoading || isLoading) ? 3 : 0),
       (el, i) => <CardNews.Loading key={i} />,
     ),
-  ], [forceLoading, isLoading, posts]);
-  const isMatchCategory = useCallback(
-    (name: any) => router.query.kategori === name,
-    [router.query],
-  );
+  ], [forceLoading, isLoading, posts, router.query, isMatchCategory]);
 
   return (
     <MainLayout title="Postingan">
