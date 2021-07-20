@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import useSWR from 'swr';
 import { Merch } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
@@ -9,7 +10,6 @@ import type { Entry } from 'contentful';
 import type { MerchandiseEntry } from 'app/services/contentful';
 import type { TuseModelFn } from 'hooks/contentful';
 import styleBtn from 'styles/components/button.module.sass';
-import useSWR from 'swr';
 
 const fetchQuery = {
   select: 'sys.id,fields.nama,fields.harga,fields.gambar,fields.slug',
