@@ -1,15 +1,37 @@
+import { Entry } from 'contentful';
 import Image from 'next/image';
 import Link from 'next/link';
 import YouTube from 'react-youtube';
 import { ArrowDown32, ArrowRight16 } from '@carbon/icons-react';
+import { Merch, Post } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
 import CardMerch from 'components/CardMerch';
 import CardNews from 'components/Home/CardNews';
 import * as content from '@/content-data';
 import styleBtn from 'styles/components/button.module.sass';
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
+import type { PostEntry, MerchandiseEntry } from 'app/services/contentful';
 
-export default function Home() {
+interface StaticProps {
+  news: Entry<PostEntry>[];
+  merchandises: Entry<MerchandiseEntry>[];
+}
+
+export const getStaticProps: GetStaticProps<StaticProps> = async () => ({
+  props: {
+    news: await Post.get({
+      select: 'sys.id,sys.createdAt,fields.slug,fields.judul,fields.thumbnail,fields.kategori',
+      limit: 8,
+    }),
+    merchandises: await Merch.get({
+      select: 'sys.id,fields.slug,fields.nama,fields.harga,fields.gambar',
+      limit: 8,
+    }),
+  },
+});
+
+export default function Home({ news, merchandises }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <MainLayout>
       <header className="h-screen bg-primary-100 flex flex-col">
@@ -42,13 +64,13 @@ export default function Home() {
 
       <PageSection title="Informasi Terbaru">
         <ul className="overflow-x-auto py-8 flex flex-nowrap gap-x-4">
-          {Array.from(Array(5), (el, i) => (
-            <li key={i}>
+          {news.map((el) => (
+            <li key={el.sys.id}>
               <CardNews
-                title="Skuyyy! ikut PKKMB dapet sertifikat lho!!"
-                url="/postingan/lorem-keren!!"
-                thumbnailSrc="https://picsum.photos/seed/picsum/200/300"
-                meta={['Berita', '20 Agustus 2001']}
+                title={el.fields.judul}
+                slug={el.fields.slug}
+                thumbnailSrc={Post.resolveThumbnailUrl(el)}
+                meta={Post.resolveMeta(el)}
                 className="w-max"
               />
             </li>
@@ -85,12 +107,13 @@ export default function Home() {
 
       <PageSection title="Merch">
         <ul className="overflow-x-auto py-8 flex flex-nowrap gap-x-4">
-          {Array.from(Array(5), (el, i) => (
-            <li key={i}>
+          {merchandises.map((el) => (
+            <li key={el.sys.id}>
               <CardMerch
-                name="Geprek Sehat"
-                price="10k"
-                thumbnailSrc="https://picsum.photos/seed/picsum/200/300"
+                name={el.fields.nama}
+                price={Merch.formatPrice(el.fields.harga)}
+                slug={el.fields.slug}
+                thumbnailSrc={Merch.resolveThumbnailUrl(el)}
                 className="!w-72 !h-96"
               />
             </li>
