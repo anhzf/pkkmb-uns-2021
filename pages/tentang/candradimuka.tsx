@@ -1,14 +1,19 @@
+import { useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight20, ChevronDown20 } from '@carbon/icons-react';
 import { Transition } from '@headlessui/react';
+import { PageScrollContext } from 'pages/_app';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
 import Accordion from 'components/Accordion';
 import shimmer, { toBase64 } from 'components/Shimmer';
+import type { CSSProperties } from 'react';
 import styles from 'styles/About.module.sass';
 
 export default function Candradimuka() {
+  const pageScroll = useContext(PageScrollContext);
+
   return (
     <MainLayout title="Candradimuka">
       <div className="p-10 pb-0">
@@ -16,7 +21,10 @@ export default function Candradimuka() {
       </div>
 
       <PageSection>
-        <div className="relative w-full">
+        <div
+          className="relative w-full transform"
+          style={{ '--tw-translate-y': `${pageScroll.scrollTop / 5}px` } as CSSProperties}
+        >
           <Image
             src="/Logo.png"
             alt="Logo Candradimuka"
@@ -29,11 +37,20 @@ export default function Candradimuka() {
           />
         </div>
 
-        <blockquote className={styles.bigQuote}>
+        <blockquote
+          className={styles.bigQuote}
+          style={{
+            '--block-translate-x': `${pageScroll.scrollTop / 100}px`,
+            '--block-translate-y': `${pageScroll.scrollTop / -20}px`,
+          } as CSSProperties}
+        >
           Suatu tempat penggemblengan dan penempatan jati diri agar memiliki karakter pribadi yang kuat, terlatih dan tangkas
         </blockquote>
 
-        <div className="flex flex-col items-stretch gap-y-1">
+        <div
+          className="flex flex-col items-stretch gap-y-1 transform"
+          style={{ '--tw-translate-y': `${pageScroll.scrollTop / -7.5}px` } as CSSProperties}
+        >
           <Accordion
             as="section"
             defaultOpen

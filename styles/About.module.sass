@@ -1,5 +1,5 @@
 .bigQuote
-  @apply self-center max-w-md my-8 relative p-4 font-bold text-4xl text-primary-600 italic
+  @apply self-center max-w-md my-36 relative p-4 font-bold text-4xl text-primary-600 italic
 
   &::before
     content: '\201C'
@@ -7,5 +7,7 @@
 
   &::after
     content: ''
-    @apply absolute top-1/2 left-1/2 bottom-1/2 right-1/2 pointer-events-none w-72 h-96 bg-primary-200 bg-opacity-20 -translate-x-1/2 -translate-y-1/2
+    @apply absolute top-1/2 left-1/2 bottom-1/2 right-1/2 pointer-events-none w-72 h-96 bg-primary-200 bg-opacity-20 transform
     --tw-rotate: -80deg
+    --tw-translate-x: calc(-50% - var(--block-translate-x))
+    --tw-translate-y: calc(-50% - var(--block-translate-y))
