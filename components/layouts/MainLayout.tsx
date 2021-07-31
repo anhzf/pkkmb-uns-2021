@@ -26,9 +26,7 @@ export default function MainLayout({ title, children, ...props }: Props) {
   const onSearchSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // client.getEntries({ query: inputSearchElm.current?.value })
-      //   .then(console.log)
-      //   .catch(console.log);
+      router.push(`/search?q=${encodeURIComponent(inputSearchElm.current?.value || '')}`);
     },
     [],
   );
