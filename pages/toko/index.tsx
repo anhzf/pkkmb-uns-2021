@@ -37,18 +37,13 @@ export default function Toko({ merchandises }: InferGetStaticPropsType<typeof ge
   const merchList = useMemo(() => [
     ...(Object.values(dataPool)
       .flat().map((el) => (
-        <li
+        <CardMerch
           key={el.sys.id}
-          className="h-[60vmin] max-h-96"
-        >
-          <CardMerch
-            key={el.sys.id}
-            name={el.fields.nama}
-            price={Merch.formatPrice(el.fields.harga)}
-            slug={el.fields.slug}
-            thumbnailSrc={Merch.resolveThumbnailUrl(el)}
-          />
-        </li>
+          as="li"
+          name={el.fields.nama}
+          slug={el.fields.slug}
+          thumbnailSrc={Merch.resolveThumbnailUrl(el)}
+        />
       ))),
     // skeleton
     ...Array.from(
@@ -64,7 +59,7 @@ export default function Toko({ merchandises }: InferGetStaticPropsType<typeof ge
       </div>
 
       <PageSection title="Merchandise">
-        <ul className="py-8 grid grid-cols-2 auto-rows-max gap-4">
+        <ul className="py-8 grid grid-cols-3 auto-rows-max gap-6">
           {merchList}
         </ul>
 

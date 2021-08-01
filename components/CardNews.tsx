@@ -34,13 +34,13 @@ const CardNews = Object.assign(({
 }: Props) => (
   <article
     title="klik untuk membaca"
-    tw="overflow-hidden relative rounded-lg border-t border-gray-100 shadow transition-shadow hover:shadow-xl"
+    tw="overflow-hidden relative border-t border-b border-gray-100 rounded-2xl shadow transition-shadow hover:shadow-xl"
     {...props}
   >
     <Link href={`/postingan/${slug}`}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <a className="w-full h-40 bg-white transition-colors grid grid-cols-3 hover:bg-gray-50">
-        <div className="relative">
+      <a className="w-full h-40 p-4 bg-white transition-colors grid grid-cols-3 gap-x-2 hover:bg-gray-50">
+        <div className="overflow-hidden relative rounded-xl">
           <Image
             src={thumbnailSrc}
             layout="fill"
@@ -52,9 +52,9 @@ const CardNews = Object.assign(({
         </div>
 
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <div className="col-span-2 p-4 flex flex-col justify-between">
+        <div className="col-span-2 p-4 flex flex-col justify-between ">
           <div className="flex flex-col gap-y-2">
-            <h3 className="font-medium text-gray-900 line-clamp-2">{title}</h3>
+            <h3 className="font-bold text-gray-600 line-clamp-2">{title}</h3>
             <p className="text-xs text-gray-500 line-clamp-3">{desc}</p>
           </div>
 
@@ -64,7 +64,7 @@ const CardNews = Object.assign(({
             {meta.map((el) => (
               <span
                 key={el}
-                className="px-4 first:pl-0 last:pr-0 text-xs text-primary-400"
+                className="px-4 first:pl-0 last:pr-0 font-medium text-xs text-primary-400"
               >
                 {el}
               </span>

@@ -2,14 +2,12 @@ import { useState } from 'react';
 import { Entry } from 'contentful';
 import Image from 'next/image';
 import Link from 'next/link';
-import Scrollbars from 'react-custom-scrollbars';
 import { ArrowDown32, ArrowRight16, PlayFilledAlt32 } from '@carbon/icons-react';
 import { Merch, Post } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
-import { HorizontalThumb } from 'components/Scrollbar';
+import CardNews from 'components/CardNews';
 import CardMerch from 'components/CardMerch';
-import CardNews from 'components/Home/CardNews';
 import * as content from '@/content-data';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import type { PostEntry, MerchandiseEntry } from 'app/services/contentful';
@@ -23,11 +21,11 @@ interface StaticProps {
 export const getStaticProps: GetStaticProps<StaticProps> = async () => ({
   props: {
     news: await Post.get({
-      select: 'sys.id,sys.createdAt,fields.slug,fields.judul,fields.thumbnail,fields.kategori',
+      select: 'sys.id,sys.createdAt,fields.slug,fields.judul,fields.deskripsi,fields.thumbnail,fields.kategori',
       limit: 8,
     }),
     merchandises: await Merch.get({
-      select: 'sys.id,fields.slug,fields.nama,fields.harga,fields.gambar',
+      select: 'sys.id,fields.slug,fields.nama,fields.gambar',
       limit: 8,
     }),
   },
@@ -88,18 +86,7 @@ export default function Home({ news, merchandises }: InferGetStaticPropsType<typ
       </header>
 
       <PageSection title="Informasi Terbaru">
-        <Scrollbars
-          universal
-          autoHeight
-          autoHeightMax="unset"
-          renderThumbHorizontal={(props) => <HorizontalThumb {...props} />}
-          renderView={(props) => (
-            <ul
-              className="py-8 flex flex-nowrap gap-x-4"
-              {...props}
-            />
-          )}
-        >
+        <ul className="py-8 flex flex-col flex-nowrap gap-y-4">
           {news.map((el) => (
             <li
               key={el.sys.id}
@@ -107,14 +94,14 @@ export default function Home({ news, merchandises }: InferGetStaticPropsType<typ
             >
               <CardNews
                 title={el.fields.judul}
+                desc={el.fields.deskripsi}
                 slug={el.fields.slug}
                 thumbnailSrc={Post.resolveThumbnailUrl(el)}
                 meta={Post.resolveMeta(el)}
-                className="w-max"
               />
             </li>
           ))}
-        </Scrollbars>
+        </ul>
 
         <div className="p-4">
           <Link href="/postingan">
@@ -145,30 +132,17 @@ export default function Home({ news, merchandises }: InferGetStaticPropsType<typ
       </PageSection>
 
       <PageSection title="Merch">
-        <Scrollbars
-          universal
-          autoHeight
-          autoHeightMax="unset"
-          renderThumbHorizontal={(props) => <HorizontalThumb {...props} />}
-          renderView={(props) => (
-            <ul
-              className="overflow-x-auto py-8 flex flex-nowrap gap-x-4"
-              {...props}
-            />
-          )}
-        >
+        <ul className="grid grid-cols-3 auto-rows-fr gap-6">
           {merchandises.map((el) => (
-            <li key={el.sys.id}>
-              <CardMerch
-                name={el.fields.nama}
-                price={Merch.formatPrice(el.fields.harga)}
-                slug={el.fields.slug}
-                thumbnailSrc={Merch.resolveThumbnailUrl(el)}
-                className="!w-72 !h-96"
-              />
-            </li>
+            <CardMerch
+              key={el.sys.id}
+              as="li"
+              name={el.fields.nama}
+              slug={el.fields.slug}
+              thumbnailSrc={Merch.resolveThumbnailUrl(el)}
+            />
           ))}
-        </Scrollbars>
+        </ul>
 
         <div className="p-4">
           <Link href="/toko">
@@ -181,69 +155,6 @@ export default function Home({ news, merchandises }: InferGetStaticPropsType<typ
         </div>
       </PageSection>
 
-      <PageSection
-        title="Galeri"
-        bgDark
-        className="bg-primary-800"
-      >
-        <div className="grid grid-cols-12 auto-rows-[5rem] gap-2">
-          <div className="relative col-span-6 row-span-4">
-            <Image
-              src="https://picsum.photos/seed/picsum/200/300"
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-
-          <div className="relative col-span-6 row-span-3">
-            <Image
-              src="https://picsum.photos/seed/picsum/200/300"
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-
-          <div className="relative col-span-6 row-span-3">
-            <Image
-              src="https://picsum.photos/seed/picsum/200/300"
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-
-          <div className="relative col-span-6 row-span-4">
-            <Image
-              src="https://picsum.photos/seed/picsum/200/300"
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-
-          <div className="relative col-span-3 row-span-2">
-            <Image
-              src="https://picsum.photos/seed/picsum/200/300"
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-
-          <div className="relative col-span-3 row-span-2">
-            <Image
-              src="https://picsum.photos/seed/picsum/200/300"
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-
-          <div className="relative col-span-12 row-span-3">
-            <Image
-              src="https://picsum.photos/seed/picsum/200/300"
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-        </div>
-      </PageSection>
     </MainLayout>
   );
 }

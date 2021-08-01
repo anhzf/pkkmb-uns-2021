@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Skeleton from 'components/Skeleton';
-import 'twin.macro';
+import tw from 'twin.macro';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   name: string;
-  price: string;
   slug: string;
   thumbnailSrc: string;
 }
@@ -17,33 +16,33 @@ const CardLoading = () => (
   </Skeleton>
 );
 
+const Container = tw.article`overflow-hidden relative w-full aspect-w-1 aspect-h-1 rounded-xl`;
+
 const CardMerch = Object.assign(({
-  name, price, slug, thumbnailSrc, ...props
+  name, slug, thumbnailSrc, className, ...props
 }: Props) => (
-  <article
-    tw="relative overflow-hidden shadow-sm w-full h-full"
+  <Container
+    className={`group ${className}`}
     {...props}
   >
-    <Link href={`/toko/${encodeURIComponent(slug)}`}>
+    <Link href={`/toko/${slug}`}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <a className="block w-full h-full">
+      <a>
         <Image
-          src={thumbnailSrc}
           layout="fill"
-          objectFit="cover"
-          className="w-full h-full"
+          src={thumbnailSrc}
+          className="transition-transform group-hover:scale-110 group-hover:rotate-2"
         />
+
+        {/* overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent origin-bottom scale-y-50 transition-transform group-hover:scale-y-100" />
+
+        <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end p-2">
+          <span className="font-medium text-white line-clamp-2">{name}</span>
+        </div>
       </a>
     </Link>
-
-    <span className="absolute top-0 left-0 px-3 py-2 bg-primary-100 font-medium text-gray-900 shadow-sm">
-      {name}
-    </span>
-
-    <span className="absolute bottom-0 left-0 px-2 py-1.5 bg-primary-100 font-bold text-white shadow-sm">
-      {price}
-    </span>
-  </article>
+  </Container>
 ), {
   Loading: CardLoading,
 });

@@ -24,20 +24,20 @@ const CardSearchResult = Object.assign(({
   title, url, tags = [], ...props
 }: Props) => (
   <article
-    tw="p-4 bg-white shadow-sm"
+    tw="p-4 bg-white rounded-xl shadow-sm transition-colors hover:bg-gray-50"
     {...props}
   >
     <Link href={url}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a className="flex">
         <div className="flex-grow flex flex-col">
-          <h6 className="font-medium text-gray-900 line-clamp-2">{title}</h6>
+          <h6 className="font-bold text-gray-600 line-clamp-2">{title}</h6>
 
           <div className="flex divide-x divide-primary-200/50">
             {tags.map((el) => (
               <span
                 key={el}
-                className="px-4 first:pl-0 last:pr-0 text-xs text-primary-400"
+                className="px-4 first:pl-0 last:pr-0 font-medium text-xs text-primary-400"
               >
                 {el}
               </span>
