@@ -1,3 +1,4 @@
+import { InView } from 'react-intersection-observer';
 import tw from 'twin.macro';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
@@ -13,12 +14,22 @@ const PageSection = ({
     {...props}
   >
     {title && (
-      <h2
-        tw="font-bold text-6xl"
-        css={bgDark ? tw`text-white` : tw`text-gray-900`}
-      >
-        {title}
-      </h2>
+      <InView>
+        {({ inView, ref }) => (
+          <div
+            ref={ref}
+            className="overflow-hidden"
+          >
+            <h2
+              tw="font-bold text-6xl"
+              css={bgDark ? tw`text-white` : tw`text-gray-900`}
+              className={`animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
+            >
+              {title}
+            </h2>
+          </div>
+        )}
+      </InView>
     )}
 
     {children}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Entry } from 'contentful';
 import Image from 'next/image';
 import Link from 'next/link';
+import { InView } from 'react-intersection-observer';
 import { ArrowDown32, ArrowRight16, PlayFilledAlt32 } from '@carbon/icons-react';
 import { Merch, Post } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
@@ -75,33 +76,72 @@ export default function Home({ news, merchandises }: InferGetStaticPropsType<typ
             </button>
           )}
 
-        <div className="overflow-hidden flex-shrink sm:px-3 py-4 flex flex-col">
-          <h1 className="my-2 font-bold leading-[.8] text-8xl text-gray-900">PKKMB UNS 2021</h1>
-          <h2 className="font-bold leading-snug tracking-wide text-5xl text-primary-900">CANDRADIMUKA</h2>
-        </div>
+        <InView>
+          {({ inView, ref }) => (
+            <div
+              ref={ref}
+              className="overflow-hidden flex-shrink sm:px-3 py-4 flex flex-col"
+            >
+              <h1 className="my-2 font-bold leading-[.8] text-8xl text-gray-900">
+                <div className="overflow-hidden ">
+                  <span
+                    className={`block animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
+                  >
+                    PKKMB UNS
+                  </span>
+                </div>
+                <div className="overflow-hidden ">
+                  <span
+                    className={`block animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
+                    style={{ animationDelay: '.15s' }}
+                  >
+                    2021
+                  </span>
+                </div>
+              </h1>
 
-        <div className="self-center bg-primary-700 flex flex-col items-center">
-          <ArrowDown32 className="text-white" />
+              <div className="overflow-hidden">
+                <h2
+                  className={`font-bold leading-snug tracking-wide text-5xl text-primary-900 animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
+                  style={{ animationDelay: '.25s' }}
+                >
+                  CANDRADIMUKA
+                </h2>
+              </div>
+            </div>
+          )}
+        </InView>
+
+        <div className="self-center flex flex-col items-center">
+          <ArrowDown32 className="text-brand-1 animate-pulse" />
         </div>
       </header>
 
       <PageSection title="Informasi Terbaru">
-        <ul className="py-8 flex flex-col flex-nowrap gap-y-4">
-          {news.map((el) => (
-            <li
-              key={el.sys.id}
-              className="flex-shrink-0"
+        <InView>
+          {({ inView, ref }) => (
+            <ul
+              ref={ref}
+              className="py-8 flex flex-col flex-nowrap gap-y-4"
             >
-              <CardNews
-                title={el.fields.judul}
-                desc={el.fields.deskripsi}
-                slug={el.fields.slug}
-                thumbnailSrc={Post.resolveThumbnailUrl(el)}
-                meta={Post.resolveMeta(el)}
-              />
-            </li>
-          ))}
-        </ul>
+              {news.map((el, i) => (
+                <li
+                  key={el.sys.id}
+                  className={`flex-shrink-0 animate__animated ${inView ? 'animate__slideInLeft' : '-translate-x-full'}`}
+                  style={{ animationDelay: `${i * 0.1 + 0.05}s` }}
+                >
+                  <CardNews
+                    title={el.fields.judul}
+                    desc={el.fields.deskripsi}
+                    slug={el.fields.slug}
+                    thumbnailSrc={Post.resolveThumbnailUrl(el)}
+                    meta={Post.resolveMeta(el)}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </InView>
 
         <div className="p-4">
           <Link href="/postingan">
@@ -118,7 +158,16 @@ export default function Home({ news, merchandises }: InferGetStaticPropsType<typ
         title="Sekilas PKKMB UNS"
         className="bg-primary-100"
       >
-        <p className="max-w-prose py-8 font-medium text-lg text-primary-900">{content.Home.aboutPkkmb}</p>
+        <InView>
+          {({ inView, ref }) => (
+            <p
+              ref={ref}
+              className={`max-w-prose py-8 font-medium text-lg text-primary-900 animate__animated ${inView ? 'animate__slideInLeft' : '-translate-x-full'}`}
+            >
+              {content.Home.aboutPkkmb}
+            </p>
+          )}
+        </InView>
 
         <div className="p-4">
           <Link href="/tentang">
@@ -132,17 +181,29 @@ export default function Home({ news, merchandises }: InferGetStaticPropsType<typ
       </PageSection>
 
       <PageSection title="Merch">
-        <ul className="grid grid-cols-3 auto-rows-fr gap-6">
-          {merchandises.map((el) => (
-            <CardMerch
-              key={el.sys.id}
-              as="li"
-              name={el.fields.nama}
-              slug={el.fields.slug}
-              thumbnailSrc={Merch.resolveThumbnailUrl(el)}
-            />
-          ))}
-        </ul>
+        <InView>
+          {({ inView, ref }) => (
+            <ul
+              ref={ref}
+              className="grid grid-cols-3 auto-rows-fr gap-4 sm:gap-6"
+            >
+              {merchandises.map((el, i) => (
+                <li
+                  key={el.sys.id}
+                  className="overflow-hidden"
+                >
+                  <CardMerch
+                    name={el.fields.nama}
+                    slug={el.fields.slug}
+                    thumbnailSrc={Merch.resolveThumbnailUrl(el)}
+                    className={`animate__animated ${inView ? 'animate__slideInUp' : '-translate-x-full'}`}
+                    style={{ animationDelay: `${i * 0.1 + 0.05}s` }}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </InView>
 
         <div className="p-4">
           <Link href="/toko">

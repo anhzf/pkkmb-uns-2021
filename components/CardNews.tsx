@@ -40,7 +40,7 @@ const CardNews = Object.assign(({
     <Link href={`/postingan/${slug}`}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a className="w-full h-40 p-4 bg-white transition-colors grid grid-cols-3 gap-x-2 hover:bg-gray-50">
-        <div className="overflow-hidden relative rounded-xl">
+        <div className="overflow-hidden relative rounded-xl w-full h-full">
           <Image
             src={thumbnailSrc}
             layout="fill"
