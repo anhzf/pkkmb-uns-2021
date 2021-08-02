@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { InView } from 'react-intersection-observer';
 import useSWR from 'swr';
 import { Merch } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
@@ -39,7 +40,6 @@ export default function Toko({ merchandises }: InferGetStaticPropsType<typeof ge
       .flat().map((el) => (
         <CardMerch
           key={el.sys.id}
-          as="li"
           name={el.fields.nama}
           slug={el.fields.slug}
           thumbnailSrc={Merch.resolveThumbnailUrl(el)}
@@ -58,10 +58,28 @@ export default function Toko({ merchandises }: InferGetStaticPropsType<typeof ge
         <h1 className="font-bold text-sm text-primary-900 uppercase">Toko</h1>
       </div>
 
-      <PageSection title="Merchandise">
-        <ul className="py-8 grid grid-cols-3 auto-rows-max gap-6">
-          {merchList}
-        </ul>
+      <PageSection
+        title="Merchandise"
+        triggerTitleAnimationOnce
+      >
+        <InView triggerOnce>
+          {({ inView, ref }) => (
+            <ul
+              ref={ref}
+              className="py-8 grid grid-cols-3 auto-rows-max gap-6"
+            >
+              {merchList.map((el, i) => (
+                <li
+                  key={el.key}
+                  className={`animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
+                  style={{ animationDelay: `${i * 0.1 + 0.05}s` }}
+                >
+                  {el}
+                </li>
+              ))}
+            </ul>
+          )}
+        </InView>
 
         <div className="p-4 flex justify-center">
           {isDone

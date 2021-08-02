@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Scrollbars from 'react-custom-scrollbars';
+import { InView } from 'react-intersection-observer';
 import { Post } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
@@ -61,7 +62,10 @@ export default function Postingan() {
         <h1 className="font-bold text-sm text-primary-900 uppercase tracking-tight">POSTINGAN</h1>
       </div>
 
-      <PageSection title="Berita">
+      <PageSection
+        title="Berita"
+        triggerTitleAnimationOnce
+      >
         <div className="pb-8 flex flex-col gap-y-4 border-b border-gray-200">
           <span className="font-bold text-sm text-gray-400 uppercase tracking-tight">
             PILIH KATEGORI
@@ -100,9 +104,24 @@ export default function Postingan() {
           </Scrollbars>
         </div>
 
-        <div className="flex flex-col gap-y-10">
-          {postList}
-        </div>
+        <InView triggerOnce>
+          {({ inView, ref }) => (
+            <ul
+              ref={ref}
+              className="py-8 flex flex-col gap-y-8"
+            >
+              {postList.map((el, i) => (
+                <li
+                  key={el.key}
+                  className={`flex-shrink-0 animate__animated ${inView ? 'animate__slideInLeft' : '-translate-x-full'}`}
+                  style={{ animationDelay: `${i * 0.1 + 0.05}s` }}
+                >
+                  {el}
+                </li>
+              ))}
+            </ul>
+          )}
+        </InView>
 
         <div className="p-4 flex justify-center">
           {isDone

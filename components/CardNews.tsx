@@ -34,33 +34,38 @@ const CardNews = Object.assign(({
 }: Props) => (
   <article
     title="klik untuk membaca"
-    tw="overflow-hidden relative border-t border-b border-gray-100 rounded-2xl shadow transition-shadow hover:shadow-xl"
+    tw="overflow-hidden relative border-t border-b border-gray-100 rounded-2xl shadow-lg transition-shadow hover:shadow-2xl"
     {...props}
   >
     <Link href={`/postingan/${slug}`}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <a className="w-full h-40 p-4 bg-white transition-colors grid grid-cols-3 gap-x-2 hover:bg-gray-50">
-        <div className="overflow-hidden relative rounded-xl w-full h-full">
-          <Image
-            src={thumbnailSrc}
-            layout="fill"
-            objectFit="cover"
-            placeholder="blur"
-            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(400, 300))}`}
-            className="w-full h-full"
-          />
+      <a className="w-full h-40 p-4 bg-white transition-colors grid grid-cols-3 items-center gap-x-2 hover:bg-gray-50">
+        {/* h-32 is calculated from (h-40) - (p-4) */}
+        <div className="overflow-hidden h-32 rounded-xl">
+          <div className="relative w-full h-full">
+            <Image
+              src={thumbnailSrc}
+              layout="fill"
+              objectFit="cover"
+              placeholder="blur"
+              blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(400, 300))}`}
+              className="w-full h-full"
+            />
+          </div>
         </div>
 
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <div className="col-span-2 p-4 flex flex-col justify-between ">
+        <div className="col-span-2 px-4 flex flex-col justify-between ">
           <div className="flex flex-col gap-y-2">
             <h3 className="font-bold text-gray-600 line-clamp-2">{title}</h3>
             <p className="text-xs text-gray-500 line-clamp-3">{desc}</p>
           </div>
 
-          {children}
+          <div className="flex-shrink overflow-hidden overflow-ellipsis">
+            {children}
+          </div>
 
-          <div className="flex divide-x divide-primary-200/50">
+          <div className="mt-2 flex divide-x divide-primary-200/50">
             {meta.map((el) => (
               <span
                 key={el}

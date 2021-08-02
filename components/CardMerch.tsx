@@ -31,7 +31,7 @@ const CardMerch = Object.assign(({
         <Image
           layout="fill"
           src={thumbnailSrc}
-          className="transition-transform group-hover:scale-110 group-hover:rotate-2"
+          className="bg-gray-100 transition-transform group-hover:scale-110 group-hover:rotate-2"
         />
 
         {/* overlay */}
