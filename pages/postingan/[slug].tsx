@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft16, Favorite20, Share20 } from '@carbon/icons-react';
+import { ArrowLeft16, /* Favorite20, */ Share20 } from '@carbon/icons-react';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Post } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
@@ -101,13 +101,13 @@ export default function Artikel({ post }: InferGetStaticPropsType<typeof getStat
           </div>
 
           <div className="flex gap-x-4">
-            <button
+            {/* <button
               type="button"
               className={`${styleBtn.push} !bg-primary-100 !text-gray-900 !rounded-lg hover:!bg-primary-400`}
             >
               <Favorite20 />
               <span>{post.fields.suka}</span>
-            </button>
+            </button> */}
 
             <button
               type="button"

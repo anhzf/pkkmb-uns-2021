@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import tw from 'twin.macro';
+import { InView } from 'react-intersection-observer';
 import Scrollbars from 'react-custom-scrollbars';
 import { SiWhatsapp } from 'react-icons/si';
 import { ArrowLeft16 } from '@carbon/icons-react';
@@ -51,13 +53,18 @@ export const getStaticProps: GetStaticProps<{
 const Label = tw.a`px-4 py-2 bg-primary-300 text-yellow-50 rounded-full`;
 
 export default function MerchDetail({ merch }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(1);
+
   return (
     <MainLayout title={merch.fields.nama}>
       <div className="p-10 pb-0">
         <h1 className="font-bold text-sm text-primary-900 uppercase">TOKO</h1>
       </div>
 
-      <PageSection title={merch.fields.nama}>
+      <PageSection
+        title={merch.fields.nama}
+        triggerTitleAnimationOnce
+      >
         <div className="relative">
           <Scrollbars
             universal
@@ -72,11 +79,14 @@ export default function MerchDetail({ merch }: InferGetStaticPropsType<typeof ge
               />
             )}
           >
-            {Merch.resolveThumbnailsUrl(merch).map((el) => (
-              <li
+            {Merch.resolveThumbnailsUrl(merch).map((el, i) => (
+              <InView
                 key={el}
+                threshold={1}
+                as="li"
                 className="flex-shrink-0 w-96 h-full"
                 style={{ scrollSnapAlign: 'center' }}
+                onChange={(inView) => inView && setCurrentSlideIndex(i + 1)}
               >
                 <div className="relative aspect-w-10 aspect-h-7 w-full h-full">
                   <Image
@@ -85,12 +95,13 @@ export default function MerchDetail({ merch }: InferGetStaticPropsType<typeof ge
                     objectFit="cover"
                   />
                 </div>
-              </li>
+              </InView>
             ))}
           </Scrollbars>
 
           <span className="absolute left-0 bottom-0 my-4 px-3 py-2 bg-gray-800/80 text-white shadow backdrop-blur-sm">
-            1/
+            {currentSlideIndex}
+            /
             {merch.fields.gambar.length}
           </span>
         </div>
