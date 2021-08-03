@@ -102,7 +102,7 @@ export default function MainLayout({ title, children, ...props }: Props) {
         <button
           type="button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`h-16 p-2 ${isMenuOpen ? '' : 'bg-brand-1/20'} backdrop-blur rounded-full`}
+          className={`h-14 p-3 ${isMenuOpen ? '' : 'bg-brand-1/20'} backdrop-blur rounded-full`}
         >
           <div className={isMenuOpen ? styleNavbar.hamburger_close : styleNavbar.hamburger} />
         </button>

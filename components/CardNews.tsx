@@ -13,7 +13,7 @@ interface Props extends React.HTMLProps<HTMLElement> {
 }
 
 const CardLoading = () => (
-  <div className="w-full h-40 bg-white rounded-lg border-t border-gray-100 shadow grid grid-cols-3">
+  <div className="w-full h-40 bg-white rounded-lg border-t border-gray-100 shadow-lg grid grid-cols-3">
     <Skeleton className="w-full h-full !rounded-r-none" />
     <div className="col-span-2 p-4 flex flex-col justify-between">
       <div className="flex flex-col gap-y-2">
@@ -39,7 +39,7 @@ const CardNews = Object.assign(({
   >
     <Link href={`/postingan/${slug}`}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <a className="w-full h-40 p-4 bg-white transition-colors grid grid-cols-3 items-center gap-x-2 hover:bg-gray-50">
+      <a className="w-full h-40 p-2 sm:p-4 bg-white transition-colors grid grid-cols-3 items-center gap-x-1 sm:gap-x-2 hover:bg-gray-50">
         {/* h-32 is calculated from (h-40) - (p-4) */}
         <div className="overflow-hidden h-32 rounded-xl">
           <div className="relative w-full h-full">
@@ -55,7 +55,7 @@ const CardNews = Object.assign(({
         </div>
 
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <div className="col-span-2 px-4 flex flex-col justify-between ">
+        <div className="col-span-2 px-2 sm:px-4 flex flex-col justify-between ">
           <div className="flex flex-col gap-y-2">
             <h3 className="font-bold text-gray-600 line-clamp-2">{title}</h3>
             <p className="text-xs text-gray-500 line-clamp-3">{desc}</p>
@@ -69,7 +69,7 @@ const CardNews = Object.assign(({
             {meta.map((el) => (
               <span
                 key={el}
-                className="px-4 first:pl-0 last:pr-0 font-medium text-xs text-primary-400"
+                className="px-4 first:pl-0 last:pr-0 font-medium text-xs text-primary-400 truncate"
               >
                 {el}
               </span>

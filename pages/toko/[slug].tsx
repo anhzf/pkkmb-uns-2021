@@ -7,6 +7,7 @@ import Scrollbars from 'react-custom-scrollbars';
 import { SiWhatsapp } from 'react-icons/si';
 import { ArrowLeft16 } from '@carbon/icons-react';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import config from '@/config';
 import { Merch } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
@@ -18,8 +19,6 @@ import type { Document } from '@contentful/rich-text-types';
 import type { MerchandiseEntry } from 'app/services/contentful';
 import styleBtn from 'styles/components/button.module.sass';
 
-const STATIC_PROPS_REVALIDATE_INTERVAL = 1000 * 60 * 30; // 30 minutes
-
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await Merch.getAllSlug();
 
@@ -27,7 +26,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths: slugs.map((slug) => ({
       params: { slug },
     })),
-    fallback: false,
+    fallback: 'blocking',
   };
 };
 
@@ -41,7 +40,7 @@ export const getStaticProps: GetStaticProps<{
 
     return {
       props: { merch },
-      revalidate: STATIC_PROPS_REVALIDATE_INTERVAL,
+      revalidate: config.STATIC_PROPS_REVALIDATE_INTERVAL,
     };
   }
 

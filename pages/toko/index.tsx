@@ -1,15 +1,10 @@
 import { useState, useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
-import useSWR from 'swr';
 import { Merch } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
 import CardMerch from 'components/CardMerch';
-import { usePaginatedModels } from 'hooks/contentful';
-import type { GetStaticProps, InferGetStaticPropsType } from 'next';
-import type { Entry } from 'contentful';
-import type { MerchandiseEntry } from 'app/services/contentful';
-import type { TuseModelFn } from 'hooks/contentful';
+import { usePaginatedMerch } from 'hooks/contentful';
 import styleBtn from 'styles/components/button.module.sass';
 
 const fetchQuery = {
@@ -17,24 +12,14 @@ const fetchQuery = {
   limit: 10,
 };
 
-const fetcher = (q?: any) => Merch.get({ ...fetchQuery, ...q });
-
-const useModel: TuseModelFn<MerchandiseEntry> = (key, q, opts) => useSWR([key, q], fetcher, opts);
-
-export const getStaticProps: GetStaticProps<{merchandises: Entry<MerchandiseEntry>[]}> = async () => ({
-  props: {
-    merchandises: await fetcher(),
-  },
-});
-
-export default function Toko({ merchandises }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Toko() {
+  const [devState] = useState({
+    forceLoading: false,
+  });
   const {
     dataPool, isLoading, isDone, next,
-  } = usePaginatedModels(useModel, 'merchandises', fetchQuery, {
-    poolInit: { 0: merchandises },
-  });
+  } = usePaginatedMerch(fetchQuery);
   // force all ui to loading states (just for development)
-  const [forceLoading] = useState(false);
   const merchList = useMemo(() => [
     ...(Object.values(dataPool)
       .flat().map((el) => (
@@ -47,10 +32,10 @@ export default function Toko({ merchandises }: InferGetStaticPropsType<typeof ge
       ))),
     // skeleton
     ...Array.from(
-      Array((forceLoading || isLoading) ? 3 : 0),
+      Array((devState.forceLoading || isLoading) ? 3 : 0),
       (el, i) => <CardMerch.Loading key={i} />,
     ),
-  ], [forceLoading, isLoading, dataPool]);
+  ], [devState.forceLoading, isLoading, dataPool]);
 
   return (
     <MainLayout title="Toko">

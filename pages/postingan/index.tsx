@@ -12,15 +12,21 @@ import * as Category from 'components/Postingan/Category';
 import { usePaginatedPosts } from 'hooks/contentful';
 import styleBtn from 'styles/components/button.module.sass';
 
+const createQuery = (kategori?: string) => ({
+  select: 'sys.id,sys.createdAt,fields.slug,fields.judul,fields.deskripsi,fields.thumbnail,fields.kategori',
+  limit: 10,
+  fields: { kategori },
+});
+
 export default function Postingan() {
   const router = useRouter();
-  // force all ui to loading states (just for development)
-  const [forceLoading] = useState(false);
-  const query = useMemo(() => ({
-    select: 'sys.id,sys.createdAt,fields.slug,fields.judul,fields.deskripsi,fields.thumbnail,fields.kategori',
-    limit: 10,
-    fields: { kategori: router.query.kategori },
-  }), [router.query]);
+  const [devState] = useState({
+    forceLoading: false,
+  });
+  const query = useMemo(
+    () => createQuery(router.query.kategori as string | undefined),
+    [router.query],
+  );
   const isMatchCategory = useCallback(
     (name: any) => router.query.kategori === name,
     [router.query],
@@ -51,10 +57,10 @@ export default function Postingan() {
       ))),
     // skeleton
     ...Array.from(
-      Array((forceLoading || isLoading) ? 3 : 0),
+      Array((devState.forceLoading || isLoading) ? 3 : 0),
       (el, i) => <CardNews.Loading key={i} />,
     ),
-  ], [forceLoading, isLoading, posts, router.query, isMatchCategory]);
+  ], [devState.forceLoading, isLoading, posts, router.query, isMatchCategory]);
 
   return (
     <MainLayout title="Postingan">
@@ -79,7 +85,7 @@ export default function Postingan() {
             className="relative w-full"
           >
             <div className="w-full px-2 py-4 flex gap-x-4">
-              {(!forceLoading || isLoading) && posts?.length
+              {(!devState.forceLoading || isLoading) && posts?.length
                 ? (
                   <>
                     <Category.Item active={isMatchCategory(undefined)}>semua</Category.Item>

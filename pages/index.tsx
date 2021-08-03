@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { InView } from 'react-intersection-observer';
 import { ArrowDown32, ArrowRight16, PlayFilledAlt32 } from '@carbon/icons-react';
+import config from '@/config';
 import { Merch, Post } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
@@ -30,6 +31,7 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => ({
       limit: 8,
     }),
   },
+  revalidate: config.STATIC_PROPS_REVALIDATE_INTERVAL,
 });
 
 export default function Home({ news, merchandises }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -40,15 +42,13 @@ export default function Home({ news, merchandises }: InferGetStaticPropsType<typ
       <header className="h-screen bg-primary-100 flex flex-col items-stretch">
         {isTeaserShow
           ? (
-            <div className="flex-grow ">
+            <div className="flex-grow">
               <iframe
                 title="teaserPkkmb"
-                id="ytplayer"
-                src="https://www.youtube.com/embed/VHGBg3lAfbY?autoplay=1&controls=0&loop=1&modestbranding=1&iv_load_policy=3"
+                src="https://drive.google.com/file/d/1Ypxutia8LfYMU4DhVgGsHgQ19rVEnj-J/preview"
                 width="100%"
                 height="100%"
-                frameBorder="0"
-                allowFullScreen
+                allow="autoplay"
                 className="bg-gray-300"
               />
             </div>
@@ -78,43 +78,49 @@ export default function Home({ news, merchandises }: InferGetStaticPropsType<typ
 
         <InView>
           {({ inView, ref }) => (
-            <div
-              ref={ref}
-              className="overflow-hidden flex-shrink sm:px-3 py-4 flex flex-col"
-            >
-              <h1 className="my-2 font-bold leading-[.8] text-8xl text-gray-900">
-                <div className="overflow-hidden ">
-                  <span
-                    className={`block animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
-                  >
-                    PKKMB UNS
-                  </span>
-                </div>
-                <div className="overflow-hidden ">
-                  <span
-                    className={`block animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
-                    style={{ animationDelay: '.15s' }}
-                  >
-                    2021
-                  </span>
-                </div>
-              </h1>
+            <>
+              <div
+                ref={ref}
+                className="overflow-hidden flex-shrink sm:px-3 py-4 flex flex-col"
+              >
+                <h1 className="my-2 font-bold leading-[.8] text-8xl text-gray-900">
+                  <div className="overflow-hidden ">
+                    <span
+                      className={`block animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
+                    >
+                      PKKMB UNS
+                    </span>
+                  </div>
+                  <div className="overflow-hidden ">
+                    <span
+                      className={`block animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
+                      style={{ animationDelay: '.15s' }}
+                    >
+                      2021
+                    </span>
+                  </div>
+                </h1>
 
-              <div className="overflow-hidden">
-                <h2
-                  className={`font-bold leading-snug tracking-wide text-5xl text-primary-900 animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
-                  style={{ animationDelay: '.25s' }}
-                >
-                  CANDRADIMUKA
-                </h2>
+                <div className="overflow-hidden">
+                  <h2
+                    className={`font-bold leading-snug tracking-wide text-5xl text-primary-900 animate__animated ${inView ? 'animate__slideInUp' : 'translate-y-full'}`}
+                    style={{ animationDelay: '.25s' }}
+                  >
+                    CANDRADIMUKA
+                  </h2>
+                </div>
               </div>
-            </div>
+
+              <div className="overflow-hidden flex flex-col">
+                <ArrowDown32
+                  className={`mx-8 text-brand-1 animate__animated ${inView ? 'animate__slideInDown' : '-translate-y-full'}`}
+                  style={{ animationDelay: '.25s' }}
+                />
+              </div>
+            </>
           )}
         </InView>
 
-        <div className="self-center flex flex-col items-center">
-          <ArrowDown32 className="text-brand-1 animate-pulse" />
-        </div>
       </header>
 
       <PageSection title="Informasi Terbaru">

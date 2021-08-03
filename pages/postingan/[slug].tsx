@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft16, /* Favorite20, */ Share20 } from '@carbon/icons-react';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import config from '@/config';
 import { Post } from 'app/services/contentful';
 import MainLayout from 'components/layouts/MainLayout';
 import PageSection from 'components/PageSection';
@@ -12,8 +13,6 @@ import type { Entry } from 'contentful';
 import type { Document } from '@contentful/rich-text-types';
 import type { PostEntry } from 'app/services/contentful';
 
-const STATIC_PROPS_REVALIDATE_INTERVAL = 1000 * 60 * 30; // 30 minutes
-
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await Post.getAllSlug();
 
@@ -21,7 +20,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths: slugs.map((slug) => ({
       params: { slug },
     })),
-    fallback: false,
+    fallback: 'blocking',
   };
 };
 
@@ -35,7 +34,7 @@ export const getStaticProps: GetStaticProps<{
 
     return {
       props: { post },
-      revalidate: STATIC_PROPS_REVALIDATE_INTERVAL,
+      revalidate: config.STATIC_PROPS_REVALIDATE_INTERVAL,
     };
   }
 

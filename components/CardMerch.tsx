@@ -10,10 +10,7 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
 }
 
 const CardLoading = () => (
-  <Skeleton className="relative overflow-hidden w-full h-full !rounded-none shadow-sm">
-    <Skeleton className="absolute top-0 left-0 w-28 h-8 !bg-primary-100/50 !rounded-none shadow-sm" />
-    <Skeleton className="absolute bottom-0 left-0 w-16 h-8 !bg-primary-100/50 !rounded-none shadow-sm" />
-  </Skeleton>
+  <Skeleton className="w-full aspect-w-1 aspect-h-1 rounded-xl" />
 );
 
 const Container = tw.article`overflow-hidden relative w-full aspect-w-1 aspect-h-1 rounded-xl`;

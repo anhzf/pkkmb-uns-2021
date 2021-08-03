@@ -4,6 +4,7 @@ module.exports = {
     domains: [
       'picsum.photos',
       'images.ctfassets.net',
+      'downloads.ctfassets.net',
     ],
   },
   webpack: (config) => ({

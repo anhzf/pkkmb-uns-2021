@@ -2,9 +2,9 @@
   @apply relative bg-gray-800 transition-colors
 
   @if $vert
-    @apply w-1.5 h-12
+    @apply w-1 h-8
   @else
-    @apply w-12 h-1.5
+    @apply w-8 h-1
 
 %pseudo-line
   @apply absolute w-full h-full bg-gray-800 transition-transform
@@ -19,10 +19,10 @@
     @apply left-0
 
   &::before
-    @apply -top-3
+    @apply -top-2
 
   &::after
-    @apply -bottom-3
+    @apply -bottom-2
 
 
 .hamburger_close
