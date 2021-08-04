@@ -74,6 +74,7 @@ const modelSluggable = <T extends EntryHasSlug>(model: ContentfulModel<T>) => ({
 
   async getBySlug(slug: string) {
     const query = { fields: { slug }, limit: 1 };
+
     const [entry] = await model.get(query);
 
     return entry;

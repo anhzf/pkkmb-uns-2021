@@ -28,7 +28,7 @@ export default function MainLayout({ title, children, ...props }: Props) {
       e.preventDefault();
       router.push(`/search?q=${encodeURIComponent(inputSearchElm.current?.value || '')}`);
     },
-    [],
+    [router],
   );
 
   useEffect(() => {
